@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "371359017594",
+    "project_id": "projekflutter-cb00a",
+    "storage_bucket": "projekflutter-cb00a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:371359017594:android:829384df5aec3b0d71a9c3",
+        "android_client_info": {
+          "package_name": "com.example.cuti_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "371359017594-0751s4fjgfrtivtqmngrhtd02ijal3r2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBMmG41LPInQZHljiNfRjArgkUc768g3Ts"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "371359017594-0751s4fjgfrtivtqmngrhtd02ijal3r2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
