@@ -1,3 +1,4 @@
+import 'package:cuti_app/Screen/User/Komponen/ExCalender.dart';
 import 'package:cuti_app/constatns/colors.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -91,7 +92,7 @@ class _ButtomNavbarState extends State<ButtomNavbar> {
             context: context,
             builder: (_) => AlertDialog(
               scrollable: true,
-              shape: RoundedRectangleBorder(
+              shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(
                   Radius.circular(35.0),
                 ),
@@ -99,32 +100,31 @@ class _ButtomNavbarState extends State<ButtomNavbar> {
               content: Builder(
                 builder: (context) {
                   // Get available height and width of the build area of this widget. Make a choice depending on the size.
-                  var height = MediaQuery.of(context).size.height;
-                  var width = MediaQuery.of(context).size.width;
 
-                  return Container(
+                  return SizedBox(
                     height: 500,
                     width: 400,
                     child: Column(
                       children: [
-                        Text(
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        const Text(
                           "Form Pengajuan Cuti",
                           style: TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.w700,
                               color: Color.fromARGB(221, 28, 28, 28)),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 20,
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           // ignore: prefer_const_literals_to_create_immutables
-                          children: [
-                            Text("Tanggal Izin"),
-                          ],
+                          children: [],
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 15,
                         ),
                         Column(
@@ -141,13 +141,13 @@ class _ButtomNavbarState extends State<ButtomNavbar> {
                                     borderSide: BorderSide(),
                                   ),
                                   border: OutlineInputBorder(
-                                    borderSide: BorderSide(
+                                    borderSide: const BorderSide(
                                         color: Colors.blue, width: 2),
                                     borderRadius: BorderRadius.circular(20),
                                   ),
                                   labelText: 'Tanggal Awal',
                                   prefixIcon: Padding(
-                                    padding: EdgeInsets.all(
+                                    padding: const EdgeInsets.all(
                                         10), // add padding to adjust icon
                                     child: IconButton(
                                       onPressed: () {
@@ -188,7 +188,7 @@ class _ButtomNavbarState extends State<ButtomNavbar> {
                                 ),
                               ),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 20,
                             ),
                             Container(
@@ -202,13 +202,13 @@ class _ButtomNavbarState extends State<ButtomNavbar> {
                                     borderSide: BorderSide(),
                                   ),
                                   border: OutlineInputBorder(
-                                    borderSide: BorderSide(
+                                    borderSide: const BorderSide(
                                         color: Colors.blue, width: 2),
                                     borderRadius: BorderRadius.circular(20),
                                   ),
                                   labelText: 'Tanggal Awal',
                                   prefixIcon: Padding(
-                                    padding: EdgeInsets.all(
+                                    padding: const EdgeInsets.all(
                                         10), // add padding to adjust icon
                                     child: IconButton(
                                       onPressed: () {
@@ -249,21 +249,21 @@ class _ButtomNavbarState extends State<ButtomNavbar> {
                                 ),
                               ),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 20,
                             ),
-                            Container(
+                            SizedBox(
                               width: double.infinity,
                               child: DropdownButtonFormField(
                                 decoration: InputDecoration(
                                   enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
+                                    borderSide: const BorderSide(
                                         color: Color.fromARGB(255, 61, 61, 61),
                                         width: 1),
                                     borderRadius: BorderRadius.circular(20),
                                   ),
                                   border: OutlineInputBorder(
-                                    borderSide: BorderSide(
+                                    borderSide: const BorderSide(
                                         color: Colors.blue, width: 1),
                                     borderRadius: BorderRadius.circular(20),
                                   ),
@@ -275,7 +275,7 @@ class _ButtomNavbarState extends State<ButtomNavbar> {
                                 isExpanded: true,
                               ),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 20,
                             ),
                             Container(
@@ -293,13 +293,13 @@ class _ButtomNavbarState extends State<ButtomNavbar> {
                                     borderSide: BorderSide(),
                                   ),
                                   border: OutlineInputBorder(
-                                    borderSide: BorderSide(
+                                    borderSide: const BorderSide(
                                         color: Colors.blue, width: 2),
                                     borderRadius: BorderRadius.circular(20),
                                   ),
                                   labelText: 'Rincial Alasan',
                                   prefixIcon: Padding(
-                                    padding: EdgeInsets.all(
+                                    padding: const EdgeInsets.all(
                                         10), // add padding to adjust icon
                                     child: IconButton(
                                       onPressed: () {},
@@ -309,7 +309,7 @@ class _ButtomNavbarState extends State<ButtomNavbar> {
                                 ),
                               ),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 20,
                             ),
                             Row(
@@ -324,12 +324,12 @@ class _ButtomNavbarState extends State<ButtomNavbar> {
                                     shape: RoundedRectangleBorder(
                                         borderRadius:
                                             BorderRadius.circular(32.0)),
-                                    minimumSize: Size(200, 65), //////// HERE
+                                    minimumSize: Size(240, 60), //////// HERE
                                   ),
                                   onPressed: () {},
-                                  child: Text(
+                                  child: const Text(
                                     'Kirim',
-                                    style: const TextStyle(fontSize: 20),
+                                    style: TextStyle(fontSize: 20),
                                   ),
                                 )
                               ],
@@ -359,8 +359,9 @@ class _ButtomNavbarState extends State<ButtomNavbar> {
   }
 
   Future<void> logout(BuildContext context) async {
-    CircularProgressIndicator();
+    const CircularProgressIndicator();
     await FirebaseAuth.instance.signOut();
+    // ignore: use_build_context_synchronously
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(

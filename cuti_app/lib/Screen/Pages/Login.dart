@@ -30,7 +30,7 @@ class _LoginPageState extends State<LoginPage> {
               begin: Alignment.topRight,
               end: Alignment.bottomLeft,
               colors: [
-                Colors.deepPurple,
+                Color.fromARGB(255, 60, 158, 255),
                 // Colors.deepOrange.shade400,
                 Color.fromARGB(255, 148, 202, 255),
               ],

@@ -21,7 +21,7 @@ class _HomeMenuState extends State<HomeMenu> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(70.0), // here the desired height
+        preferredSize: const Size.fromHeight(70.0), // here the desired height
         child: AppBar(
           automaticallyImplyLeading: false,
           elevation: 0,
@@ -42,16 +42,17 @@ class _HomeMenuState extends State<HomeMenu> {
       ),
       body: Container(
         decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment(0.8, 1),
-            colors: <Color>[
-              Colors.deepPurple,
-              // Colors.deepOrange.shade400,
-              Color.fromARGB(255, 148, 202, 255),
-            ], // Gradient from https://learnui.design/tools/gradient-generator.html
-            tileMode: TileMode.mirror,
-          ),
+          color: Color.fromARGB(255, 234, 234, 234),
+          // gradient: LinearGradient(
+          //   begin: Alignment.topLeft,
+          //   end: Alignment(0.8, 1),
+          //   colors: <Color>[
+          //     Color.fromARGB(255, 127, 70, 224),
+          //     // Colors.deepOrange.shade400,
+          //     Color.fromARGB(255, 148, 202, 255),
+          //   ], // Gradient from https://learnui.design/tools/gradient-generator.html
+          //   tileMode: TileMode.mirror,
+          // ),
         ),
         child: SingleChildScrollView(
           child: Column(
@@ -65,7 +66,9 @@ class _HomeMenuState extends State<HomeMenu> {
                         padding: EdgeInsets.only(left: 20, top: 30),
                         child: Text(
                           "INFORMASI",
-                          style: TextStyle(color: Colors.white, fontSize: 20),
+                          style: TextStyle(
+                              color: Color.fromARGB(255, 74, 74, 74),
+                              fontSize: 20),
                         ),
                       ),
                     ],
@@ -77,7 +80,9 @@ class _HomeMenuState extends State<HomeMenu> {
                         padding: EdgeInsets.only(left: 20, top: 10),
                         child: Text(
                           "CARD",
-                          style: TextStyle(color: Colors.white, fontSize: 20),
+                          style: TextStyle(
+                              color: Color.fromARGB(255, 74, 74, 74),
+                              fontSize: 20),
                         ),
                       ),
                     ],

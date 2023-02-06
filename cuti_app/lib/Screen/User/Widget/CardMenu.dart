@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -15,6 +16,8 @@ class _CardMenuState extends State<CardMenu> {
   @override
   Widget build(BuildContext context) {
     var cuti = FirebaseFirestore.instance.collection("cuti");
+    var users = FirebaseFirestore.instance.collection("users");
+    var user = FirebaseAuth.instance.currentUser;
 
     return Column(
       children: [
@@ -22,8 +25,14 @@ class _CardMenuState extends State<CardMenu> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
-              decoration: BoxDecoration(
-                  color: Colors.white, borderRadius: BorderRadius.circular(35)),
+              decoration: BoxDecoration(boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.3),
+                  spreadRadius: 5,
+                  blurRadius: 10,
+                  offset: Offset(0, 9), // changes position of shadow
+                ),
+              ], color: Colors.white, borderRadius: BorderRadius.circular(35)),
               height: 170,
               width: 350,
               child: Padding(
@@ -32,92 +41,122 @@ class _CardMenuState extends State<CardMenu> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Column(
-                          children: [
-                            Row(
-                              children: [
-                                Container(
-                                  height: 60,
-                                  width: 60,
-                                  decoration: BoxDecoration(
-                                    color: Colors.green,
-                                    borderRadius: BorderRadius.circular(40),
-                                  ),
-                                  child: Icon(
-                                    Icons.calendar_month,
-                                    size: 45,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    Text("Cuti Tersedia"),
-                                    Text(
-                                      "6",
-                                      style: TextStyle(
-                                          color: Color.fromARGB(255, 0, 0, 0),
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 30),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                        Container(
-                          height: 60,
-                          child: VerticalDivider(
-                              thickness: 2,
-                              color: Color.fromARGB(255, 203, 203, 203)),
-                        ),
-                        Column(
-                          children: [
-                            Row(
-                              children: [
-                                Container(
-                                  height: 60,
-                                  width: 60,
-                                  decoration: BoxDecoration(
-                                    color: Colors.amber,
-                                    borderRadius: BorderRadius.circular(40),
-                                  ),
-                                  child: Icon(
-                                    Icons.calendar_month,
-                                    size: 45,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text("Cuti Terpakai"),
-                                    Text(
-                                      "6",
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.w500,
-                                        fontSize: 30,
+                    FutureBuilder<DocumentSnapshot>(
+                      future: users.doc(user!.uid).get(),
+                      builder: (BuildContext context,
+                          AsyncSnapshot<DocumentSnapshot> snapshot) {
+                        //Error Handling conditions
+                        if (snapshot.hasError) {
+                          return const Text("Something went wrong");
+                        }
+
+                        if (snapshot.hasData && !snapshot.data!.exists) {
+                          return const Text("Document does not exist");
+                        }
+
+                        //Data is output to the user
+                        if (snapshot.connectionState == ConnectionState.done) {
+                          Map<String, dynamic> data =
+                              snapshot.data!.data() as Map<String, dynamic>;
+
+                          String cutiTersedia = "${data['cuti_tersedia']}";
+                          String cutiTerpakai = "${data['cuti_terpakai']}";
+
+                          return Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              Column(
+                                children: [
+                                  Row(
+                                    children: [
+                                      Container(
+                                        height: 60,
+                                        width: 60,
+                                        decoration: BoxDecoration(
+                                          color: Colors.green,
+                                          borderRadius:
+                                              BorderRadius.circular(40),
+                                        ),
+                                        child: const Icon(
+                                          Icons.calendar_month,
+                                          size: 45,
+                                          color: Colors.white,
+                                        ),
                                       ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ],
+                                      const SizedBox(
+                                        width: 10,
+                                      ),
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: <Widget>[
+                                          Text("Cuti Tersedia"),
+                                          Text(
+                                            "$cutiTersedia",
+                                            style: const TextStyle(
+                                                color: Color.fromARGB(
+                                                    255, 0, 0, 0),
+                                                fontWeight: FontWeight.w500,
+                                                fontSize: 30),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(
+                                height: 60,
+                                child: VerticalDivider(
+                                    thickness: 2,
+                                    color: Color.fromARGB(255, 203, 203, 203)),
+                              ),
+                              Column(
+                                children: [
+                                  Row(
+                                    children: [
+                                      Container(
+                                        height: 60,
+                                        width: 60,
+                                        decoration: BoxDecoration(
+                                          color: Colors.amber,
+                                          borderRadius:
+                                              BorderRadius.circular(40),
+                                        ),
+                                        child: const Icon(
+                                          Icons.calendar_month,
+                                          size: 45,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        width: 10,
+                                      ),
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: <Widget>[
+                                          Text("Cuti Terpakai"),
+                                          Text(
+                                            "$cutiTerpakai",
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.w500,
+                                              fontSize: 30,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ],
+                          );
+                        }
+                        return CircularProgressIndicator();
+                      },
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 25,
                     ),
                     Row(
@@ -157,12 +196,22 @@ class _CardMenuState extends State<CardMenu> {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            SizedBox(
+            const SizedBox(
               width: 15,
             ),
             Container(
               decoration: BoxDecoration(
-                  color: Colors.white, borderRadius: BorderRadius.circular(25)),
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(25),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.3),
+                    spreadRadius: 5,
+                    blurRadius: 10,
+                    offset: Offset(0, 9), // changes position of shadow
+                  ),
+                ],
+              ),
               height: 80,
               width: 350,
               child: Row(
@@ -178,7 +227,7 @@ class _CardMenuState extends State<CardMenu> {
                           color: Colors.red[400],
                           borderRadius: BorderRadius.circular(15),
                         ),
-                        child: Icon(
+                        child: const Icon(
                           Icons.history,
                           size: 40,
                           color: Colors.white,
@@ -189,7 +238,7 @@ class _CardMenuState extends State<CardMenu> {
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
+                    children: const [
                       Text(
                         "History Cuti",
                         style: TextStyle(fontSize: 25),
@@ -199,7 +248,7 @@ class _CardMenuState extends State<CardMenu> {
                   ),
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
+                    children: const [
                       Icon(
                         Icons.arrow_circle_right,
                         size: 50,
@@ -218,12 +267,18 @@ class _CardMenuState extends State<CardMenu> {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            SizedBox(
+            const SizedBox(
               width: 15,
             ),
             Container(
-              decoration: BoxDecoration(
-                  color: Colors.white, borderRadius: BorderRadius.circular(25)),
+              decoration: BoxDecoration(boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.3),
+                  spreadRadius: 5,
+                  blurRadius: 10,
+                  offset: Offset(0, 9), // changes position of shadow
+                ),
+              ], color: Colors.white, borderRadius: BorderRadius.circular(25)),
               height: 80,
               width: 350,
               child: Row(
@@ -239,7 +294,7 @@ class _CardMenuState extends State<CardMenu> {
                           color: Colors.blue,
                           borderRadius: BorderRadius.circular(15),
                         ),
-                        child: Icon(
+                        child: const Icon(
                           Icons.person,
                           size: 40,
                           color: Colors.white,
@@ -250,7 +305,7 @@ class _CardMenuState extends State<CardMenu> {
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
+                    children: const [
                       Text(
                         "Data Diri",
                         style: TextStyle(fontSize: 25),
@@ -260,7 +315,7 @@ class _CardMenuState extends State<CardMenu> {
                   ),
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
+                    children: const [
                       Icon(
                         Icons.arrow_circle_right,
                         size: 50,

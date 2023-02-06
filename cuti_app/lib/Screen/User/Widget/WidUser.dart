@@ -1,3 +1,4 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -103,13 +104,23 @@ class _WidUserState extends State<WidUser> {
               children: [
                 IconButton(
                   onPressed: () {
-                    logout();
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => LoginPage(),
-                      ),
-                    );
+                    AwesomeDialog(
+                      context: context,
+                      dialogType: DialogType.info,
+                      animType: AnimType.rightSlide,
+                      title: 'Logout!',
+                      desc: 'Apa kamu yakin mau keluar?.............',
+                      btnCancelOnPress: () {},
+                      btnOkOnPress: () {
+                        logout();
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => LoginPage(),
+                          ),
+                        );
+                      },
+                    ).show();
                   },
                   icon: Icon(
                     Icons.logout,
