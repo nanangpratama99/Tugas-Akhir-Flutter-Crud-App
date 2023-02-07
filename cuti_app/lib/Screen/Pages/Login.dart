@@ -60,11 +60,11 @@ class _LoginPageState extends State<LoginPage> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Text(
+                            const Text(
                               "Login",
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
-                                color: Color.fromARGB(255, 113, 113, 113),
+                                color: Colors.grey,
                                 fontSize: 40,
                               ),
                             ),

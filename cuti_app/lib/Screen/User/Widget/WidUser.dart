@@ -27,9 +27,9 @@ class _WidUserState extends State<WidUser> {
         color: Colors.white,
         borderRadius: BorderRadius.circular(70),
       ),
-      margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
       child: Padding(
-        padding: const EdgeInsets.all(10),
+        padding: const EdgeInsets.all(12),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -123,7 +123,7 @@ class _WidUserState extends State<WidUser> {
                   },
                   icon: const Icon(
                     Icons.logout,
-                    size: 40,
+                    size: 35,
                     color: Colors.deepPurple,
                   ),
                 ),

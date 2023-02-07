@@ -16,7 +16,8 @@ class CardMenu extends StatefulWidget {
 class _CardMenuState extends State<CardMenu> {
   @override
   Widget build(BuildContext context) {
-    var users = FirebaseFirestore.instance.collection("users");
+    // var users = FirebaseFirestore.instance.collection("users");
+    // var dataCuti = FirebaseFirestore.instance.collection("history_cuti");
     var user = FirebaseAuth.instance.currentUser;
 
     return Column(
@@ -41,121 +42,114 @@ class _CardMenuState extends State<CardMenu> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    FutureBuilder<DocumentSnapshot>(
-                      future: users.doc(user!.uid).get(),
-                      builder: (BuildContext context,
-                          AsyncSnapshot<DocumentSnapshot> snapshot) {
-                        //Error Handling conditions
-                        if (snapshot.hasError) {
-                          return const Text("Something went wrong");
-                        }
+                    StreamBuilder<QuerySnapshot>(
+                        stream: FirebaseFirestore.instance
+                            .collection("history_cuti")
+                            .where('uid', isEqualTo: user!.uid)
+                            .snapshots(),
+                        builder: (context, snapshot) {
+                          if (snapshot.hasError) {
+                            return Center(
+                                child: Text(
+                                    'Terjadi kesalahan ${snapshot.error}'));
+                          } else if (snapshot.hasData) {
+                            int dataCuti = snapshot.data!.docs.length;
+                            int jumCuti = 12 - dataCuti;
 
-                        if (snapshot.hasData && !snapshot.data!.exists) {
-                          return const Text("Document does not exist");
-                        }
-
-                        //Data is output to the user
-                        if (snapshot.connectionState == ConnectionState.done) {
-                          Map<String, dynamic> data =
-                              snapshot.data!.data() as Map<String, dynamic>;
-
-                          String cutiTersedia = "${data['jumlah_cuti']}";
-                          String cutiTerpakai = "${data['cuti_terpakai']}";
-
-                          return Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              Column(
-                                children: [
-                                  Row(
-                                    children: [
-                                      Container(
-                                        height: 60,
-                                        width: 60,
-                                        decoration: BoxDecoration(
-                                          color: Colors.green,
-                                          borderRadius:
-                                              BorderRadius.circular(40),
-                                        ),
-                                        child: const Icon(
-                                          Icons.calendar_month,
-                                          size: 45,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                      const SizedBox(
-                                        width: 10,
-                                      ),
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: <Widget>[
-                                          Text("Cuti Tersedia"),
-                                          Text(
-                                            "$cutiTersedia",
-                                            style: const TextStyle(
-                                                color: Color.fromARGB(
-                                                    255, 0, 0, 0),
-                                                fontWeight: FontWeight.w500,
-                                                fontSize: 30),
+                            return Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                Column(
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Container(
+                                          height: 60,
+                                          width: 60,
+                                          decoration: BoxDecoration(
+                                            color: Colors.green,
+                                            borderRadius:
+                                                BorderRadius.circular(40),
                                           ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(
-                                height: 60,
-                                child: VerticalDivider(
-                                    thickness: 2,
-                                    color: Color.fromARGB(255, 203, 203, 203)),
-                              ),
-                              Column(
-                                children: [
-                                  Row(
-                                    children: [
-                                      Container(
-                                        height: 60,
-                                        width: 60,
-                                        decoration: BoxDecoration(
-                                          color: Colors.amber,
-                                          borderRadius:
-                                              BorderRadius.circular(40),
+                                          child: const Icon(
+                                            Icons.calendar_month,
+                                            size: 45,
+                                            color: Colors.white,
+                                          ),
                                         ),
-                                        child: const Icon(
-                                          Icons.calendar_month,
-                                          size: 45,
-                                          color: Colors.white,
+                                        const SizedBox(
+                                          width: 10,
                                         ),
-                                      ),
-                                      const SizedBox(
-                                        width: 10,
-                                      ),
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: <Widget>[
-                                          Text("Cuti Terpakai"),
-                                          Text(
-                                            "$cutiTerpakai",
-                                            style: TextStyle(
-                                              fontWeight: FontWeight.w500,
-                                              fontSize: 30,
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: <Widget>[
+                                            Text("Cuti Tersedia"),
+                                            Text(
+                                              "$jumCuti",
+                                              style: const TextStyle(
+                                                  color: Color.fromARGB(
+                                                      255, 0, 0, 0),
+                                                  fontWeight: FontWeight.w500,
+                                                  fontSize: 30),
                                             ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(
+                                  height: 60,
+                                  child: VerticalDivider(
+                                      thickness: 2,
+                                      color:
+                                          Color.fromARGB(255, 203, 203, 203)),
+                                ),
+                                Column(
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Container(
+                                          height: 60,
+                                          width: 60,
+                                          decoration: BoxDecoration(
+                                            color: Colors.amber,
+                                            borderRadius:
+                                                BorderRadius.circular(40),
                                           ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ],
-                          );
-                        }
-                        return CircularProgressIndicator();
-                      },
-                    ),
+                                          child: const Icon(
+                                            Icons.calendar_month,
+                                            size: 45,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          width: 10,
+                                        ),
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: <Widget>[
+                                            Text("Cuti Terpakai"),
+                                            Text(
+                                              "$dataCuti",
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.w500,
+                                                fontSize: 30,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            );
+                          }
+                          return const CircularProgressIndicator();
+                        }),
                     const SizedBox(
                       height: 25,
                     ),

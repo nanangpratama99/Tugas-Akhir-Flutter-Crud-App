@@ -176,6 +176,9 @@ class _ButtomNavbarState extends State<ButtomNavbar> {
                                                             .size
                                                             .width,
                                                     child: TableCalendar(
+                                                      headerStyle: HeaderStyle(
+                                                          formatButtonVisible:
+                                                              false),
                                                       firstDay: DateTime.utc(
                                                           2010, 10, 16),
                                                       lastDay: DateTime.utc(

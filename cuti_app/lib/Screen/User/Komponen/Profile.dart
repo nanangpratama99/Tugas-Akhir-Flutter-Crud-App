@@ -127,7 +127,7 @@ class _ProfilMenuState extends State<ProfilMenu> {
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(30),
                           ),
-                          height: MediaQuery.of(context).size.height / 1.2,
+                          height: MediaQuery.of(context).size.height / 1.5,
                           width: MediaQuery.of(context).size.width / 1,
                           child: Column(
                             children: [
@@ -313,6 +313,9 @@ class _ProfilMenuState extends State<ProfilMenu> {
                             ],
                           ),
                         ),
+                        SizedBox(
+                          height: 20,
+                        )
                       ],
                     );
                   }
