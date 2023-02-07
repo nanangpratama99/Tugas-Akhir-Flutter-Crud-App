@@ -43,16 +43,6 @@ class _HomeMenuState extends State<HomeMenu> {
       body: Container(
         decoration: const BoxDecoration(
           color: Color.fromARGB(255, 234, 234, 234),
-          // gradient: LinearGradient(
-          //   begin: Alignment.topLeft,
-          //   end: Alignment(0.8, 1),
-          //   colors: <Color>[
-          //     Color.fromARGB(255, 127, 70, 224),
-          //     // Colors.deepOrange.shade400,
-          //     Color.fromARGB(255, 148, 202, 255),
-          //   ], // Gradient from https://learnui.design/tools/gradient-generator.html
-          //   tileMode: TileMode.mirror,
-          // ),
         ),
         child: SingleChildScrollView(
           child: Column(
@@ -73,7 +63,7 @@ class _HomeMenuState extends State<HomeMenu> {
                       ),
                     ],
                   ),
-                  SliderInfo(),
+                  const SliderInfo(),
                   Row(
                     children: const [
                       Padding(
@@ -87,11 +77,11 @@ class _HomeMenuState extends State<HomeMenu> {
                       ),
                     ],
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
-                  CardMenu(),
-                  SizedBox(
+                  const CardMenu(),
+                  const SizedBox(
                     height: 50,
                   ),
                 ],

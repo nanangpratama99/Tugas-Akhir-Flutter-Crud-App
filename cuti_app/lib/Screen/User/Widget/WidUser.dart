@@ -41,11 +41,11 @@ class _WidUserState extends State<WidUser> {
                         AsyncSnapshot<DocumentSnapshot> snapshot) {
                       //Error Handling conditions
                       if (snapshot.hasError) {
-                        return const Text("Something went wrong");
+                        return const Text("Ada sesuatu yang salah");
                       }
 
                       if (snapshot.hasData && !snapshot.data!.exists) {
-                        return const Text("Document does not exist");
+                        return const Text("Data kosong");
                       }
 
                       //Data is output to the user
@@ -54,7 +54,6 @@ class _WidUserState extends State<WidUser> {
                             snapshot.data!.data() as Map<String, dynamic>;
 
                         String nama = "${data['name']}";
-                        // String email = "${data['email']}";
                         String imgUrl = "${data['imgUrl']}";
 
                         return Row(
@@ -122,7 +121,7 @@ class _WidUserState extends State<WidUser> {
                       },
                     ).show();
                   },
-                  icon: Icon(
+                  icon: const Icon(
                     Icons.logout,
                     size: 40,
                     color: Colors.deepPurple,

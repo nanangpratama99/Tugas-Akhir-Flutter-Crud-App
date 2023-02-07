@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cuti_app/Screen/User/RoutePage/History_Cuti.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +16,6 @@ class CardMenu extends StatefulWidget {
 class _CardMenuState extends State<CardMenu> {
   @override
   Widget build(BuildContext context) {
-    var cuti = FirebaseFirestore.instance.collection("cuti");
     var users = FirebaseFirestore.instance.collection("users");
     var user = FirebaseAuth.instance.currentUser;
 
@@ -59,7 +59,7 @@ class _CardMenuState extends State<CardMenu> {
                           Map<String, dynamic> data =
                               snapshot.data!.data() as Map<String, dynamic>;
 
-                          String cutiTersedia = "${data['cuti_tersedia']}";
+                          String cutiTersedia = "${data['jumlah_cuti']}";
                           String cutiTerpakai = "${data['cuti_terpakai']}";
 
                           return Row(
@@ -246,16 +246,24 @@ class _CardMenuState extends State<CardMenu> {
                       Text("Kamu telah melakukan\npengajuan cuti\pada tanggal"),
                     ],
                   ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
-                      Icon(
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 15, right: 15),
+                    child: IconButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const HistoryCuti(),
+                          ),
+                        );
+                      },
+                      icon: Icon(
                         Icons.arrow_circle_right,
                         size: 50,
                         color: Colors.green,
                       ),
-                    ],
-                  )
+                    ),
+                  ),
                 ],
               ),
             ),

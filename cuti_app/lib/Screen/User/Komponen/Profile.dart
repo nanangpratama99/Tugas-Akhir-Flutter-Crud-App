@@ -47,11 +47,11 @@ class _ProfilMenuState extends State<ProfilMenu> {
                     AsyncSnapshot<DocumentSnapshot> snapshot) {
                   //Error Handling conditions
                   if (snapshot.hasError) {
-                    return const Text("Something went wrong");
+                    return const Text("Ada sesuatu yang salah");
                   }
 
                   if (snapshot.hasData && !snapshot.data!.exists) {
-                    return const Text("Document does not exist");
+                    return const Text("Document / data tidak ada");
                   }
 
                   //Data is output to the user
@@ -110,7 +110,7 @@ class _ProfilMenuState extends State<ProfilMenu> {
                                   height: 35,
                                 ),
                                 Text(
-                                  '$nama',
+                                  nama,
                                   style: const TextStyle(
                                       color: Colors.white, fontSize: 30),
                                 ),
@@ -122,13 +122,13 @@ class _ProfilMenuState extends State<ProfilMenu> {
                           height: 40,
                         ),
                         Container(
-                          margin: EdgeInsets.symmetric(horizontal: 20),
+                          margin: const EdgeInsets.symmetric(horizontal: 20),
                           decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(30),
                           ),
-                          height: MediaQuery.of(context).size.height / 1.5,
-                          width: MediaQuery.of(context).size.height / 2,
+                          height: MediaQuery.of(context).size.height / 1.2,
+                          width: MediaQuery.of(context).size.width / 1,
                           child: Column(
                             children: [
                               // Note: Same code is applied for the TextFormField as well

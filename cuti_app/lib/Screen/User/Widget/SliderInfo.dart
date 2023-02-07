@@ -16,12 +16,17 @@ class _SliderInfoState extends State<SliderInfo> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 20.0, horizontal: 5),
+      margin: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 5),
       height: 150.0,
       child: ListView(
         scrollDirection: Axis.horizontal,
         children: <Widget>[
           Container(
+            decoration: BoxDecoration(
+              color: White,
+              borderRadius: BorderRadius.circular(30),
+            ),
+            width: 300.0,
             child: Row(
               children: [
                 Padding(
@@ -38,28 +43,24 @@ class _SliderInfoState extends State<SliderInfo> {
                 ),
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
+                  children: const [
                     Padding(
-                      padding: const EdgeInsets.only(left: 20),
-                      // child: Text(
-                      //   "Pada Tanggal\n30-Februari-2023\nAkan diadakan\nFamilyGathering",
-                      //   style: TextStyle(fontSize: 20),
-                      // ),
+                      padding: EdgeInsets.only(left: 20),
                     ),
                   ],
                 ),
               ],
             ),
+          ),
+          const SizedBox(
+            width: 20,
+          ),
+          Container(
             decoration: BoxDecoration(
               color: White,
               borderRadius: BorderRadius.circular(30),
             ),
             width: 300.0,
-          ),
-          SizedBox(
-            width: 20,
-          ),
-          Container(
             child: Row(
               children: [
                 Padding(
@@ -76,9 +77,9 @@ class _SliderInfoState extends State<SliderInfo> {
                 ),
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
+                  children: const [
                     Padding(
-                      padding: const EdgeInsets.only(left: 20),
+                      padding: EdgeInsets.only(left: 20),
                       // child: Text(
                       //   "Pada Tanggal\n30-Februari-2023\nAkan diadakan\nFamilyGathering",
                       //   style: TextStyle(fontSize: 20),
@@ -88,13 +89,8 @@ class _SliderInfoState extends State<SliderInfo> {
                 ),
               ],
             ),
-            decoration: BoxDecoration(
-              color: White,
-              borderRadius: BorderRadius.circular(30),
-            ),
-            width: 300.0,
           ),
-          SizedBox(
+          const SizedBox(
             width: 20,
           ),
         ],

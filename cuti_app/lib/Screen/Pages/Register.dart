@@ -4,7 +4,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../../constatns/colors.dart';
 import 'Login.dart';
-// import 'model.dart';
 
 class RegisterPage extends StatefulWidget {
   @override
@@ -21,13 +20,12 @@ class _RegisterPageState extends State<RegisterPage> {
   final _auth = FirebaseAuth.instance;
 
   // TEXTFIELD CONTROLLER
-  final TextEditingController passwordController = new TextEditingController();
-  final TextEditingController confirmpassController =
-      new TextEditingController();
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController confirmpassController = TextEditingController();
+  final TextEditingController mobile = TextEditingController();
 
-  final TextEditingController nameController = new TextEditingController();
-  final TextEditingController emailController = new TextEditingController();
-  final TextEditingController mobile = new TextEditingController();
   bool _isObscure = true;
   bool _isObscure2 = true;
   File? file;
@@ -319,8 +317,10 @@ class _RegisterPageState extends State<RegisterPage> {
                                     children: [
                                       MaterialButton(
                                         shape: const RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(20.0))),
+                                          borderRadius: BorderRadius.all(
+                                            Radius.circular(20.0),
+                                          ),
+                                        ),
                                         elevation: 5.0,
                                         height: 60,
                                         minWidth: 350,
@@ -363,13 +363,13 @@ class _RegisterPageState extends State<RegisterPage> {
                                             ),
                                           );
                                         },
+                                        color: PurpleColor,
                                         child: const Text(
                                           "Masuk",
                                           style: TextStyle(
                                               fontSize: 25,
                                               color: Colors.white),
                                         ),
-                                        color: PurpleColor,
                                       ),
                                     ],
                                   ),
@@ -411,6 +411,10 @@ class _RegisterPageState extends State<RegisterPage> {
         .doc(user!.uid)
         .set({'email': emailController.text, 'rool': rool, 'name': name});
     Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (context) => LoginPage()));
+      context,
+      MaterialPageRoute(
+        builder: (context) => LoginPage(),
+      ),
+    );
   }
 }

@@ -1,4 +1,5 @@
-import 'package:cuti_app/Screen/User/Komponen/ExCalender.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cuti_app/Screen/User/RoutePage/History_Cuti.dart';
 import 'package:cuti_app/constatns/colors.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -18,14 +19,18 @@ class ButtomNavbar extends StatefulWidget {
 
 class _ButtomNavbarState extends State<ButtomNavbar> {
   int _selectedIndex = 0;
+  bool showProgress = false;
+  final _formkey = GlobalKey<FormState>();
+  final _auth = FirebaseAuth.instance;
 
+  // TEXTFIELD CONTROLLER
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final TextEditingController _textEditingController = TextEditingController();
+  final TextEditingController _rincianAlasan = TextEditingController();
+  final TextEditingController _alasan = TextEditingController();
+  final TextEditingController _startDateController = TextEditingController();
+  final TextEditingController _endDateController = TextEditingController();
 
-  // DATE CONTROLLER
-  final TextEditingController _dateController = TextEditingController();
-  final TextEditingController _dateController2 = TextEditingController();
-
+  // LIST PAGE
   static const List<Widget> _widgetOptions = <Widget>[
     HomeMenu(),
     CalenderMenu(),
@@ -38,6 +43,7 @@ class _ButtomNavbarState extends State<ButtomNavbar> {
     });
   }
 
+  // DROPDOWN LIST
   List<DropdownMenuItem<String>> get dropdownItems {
     List<DropdownMenuItem<String>> menuItems = [
       DropdownMenuItem(child: Text("Urgent"), value: "Urgent"),
@@ -46,10 +52,11 @@ class _ButtomNavbarState extends State<ButtomNavbar> {
     return menuItems;
   }
 
-  String selectedValue = "Urgent";
+  String selectedValue = 'Bepergian';
 
   @override
   Widget build(BuildContext context) {
+    var user = FirebaseAuth.instance.currentUser;
     return Scaffold(
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
@@ -104,239 +111,284 @@ class _ButtomNavbarState extends State<ButtomNavbar> {
                   return SizedBox(
                     height: 500,
                     width: 400,
-                    child: Column(
-                      children: [
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        const Text(
-                          "Form Pengajuan Cuti",
-                          style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.w700,
-                              color: Color.fromARGB(221, 28, 28, 28)),
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          // ignore: prefer_const_literals_to_create_immutables
-                          children: [],
-                        ),
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Container(
-                              height: 70,
-                              width: 250,
-                              child: TextFormField(
-                                controller: _dateController,
-                                decoration: InputDecoration(
-                                  enabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(20),
-                                    borderSide: BorderSide(),
-                                  ),
-                                  border: OutlineInputBorder(
-                                    borderSide: const BorderSide(
-                                        color: Colors.blue, width: 2),
-                                    borderRadius: BorderRadius.circular(20),
-                                  ),
-                                  labelText: 'Tanggal Awal',
-                                  prefixIcon: Padding(
-                                    padding: const EdgeInsets.all(
-                                        10), // add padding to adjust icon
-                                    child: IconButton(
-                                      onPressed: () {
-                                        showDialog(
-                                            context: context,
-                                            builder: (BuildContext context) {
-                                              return AlertDialog(
-                                                content: Container(
-                                                  height: MediaQuery.of(context)
-                                                          .size
-                                                          .height /
-                                                      2,
-                                                  width: MediaQuery.of(context)
-                                                      .size
-                                                      .width,
-                                                  child: TableCalendar(
-                                                    firstDay: DateTime.utc(
-                                                        2010, 10, 16),
-                                                    lastDay: DateTime.utc(
-                                                        2030, 3, 14),
-                                                    focusedDay: DateTime.now(),
-                                                    onDaySelected: (selectedDay,
-                                                        focusedDay) {
-                                                      _dateController.text =
-                                                          selectedDay
-                                                              .toString()
-                                                              .substring(0, 10);
-                                                      Navigator.pop(context);
-                                                    },
+                    child: Form(
+                      key: _formkey,
+                      child: Column(
+                        children: [
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          const Text(
+                            "Form Pengajuan Cuti",
+                            style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.w700,
+                                color: Color.fromARGB(221, 28, 28, 28)),
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            // ignore: prefer_const_literals_to_create_immutables
+                            children: [],
+                          ),
+                          const SizedBox(
+                            height: 15,
+                          ),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Container(
+                                height: 70,
+                                width: 250,
+                                child: TextFormField(
+                                  readOnly: true,
+                                  controller: _startDateController,
+                                  decoration: InputDecoration(
+                                    enabledBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(20),
+                                      borderSide: const BorderSide(),
+                                    ),
+                                    border: OutlineInputBorder(
+                                      borderSide: const BorderSide(
+                                          color: Colors.blue, width: 2),
+                                      borderRadius: BorderRadius.circular(20),
+                                    ),
+                                    labelText: 'Tanggal Awal',
+                                    prefixIcon: Padding(
+                                      padding: const EdgeInsets.all(
+                                          10), // add padding to adjust icon
+                                      child: IconButton(
+                                        onPressed: () {
+                                          showDialog(
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                return AlertDialog(
+                                                  content: SizedBox(
+                                                    height:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .height /
+                                                            2,
+                                                    width:
+                                                        MediaQuery.of(context)
+                                                            .size
+                                                            .width,
+                                                    child: TableCalendar(
+                                                      firstDay: DateTime.utc(
+                                                          2010, 10, 16),
+                                                      lastDay: DateTime.utc(
+                                                          2030, 3, 14),
+                                                      focusedDay:
+                                                          DateTime.now(),
+                                                      onDaySelected:
+                                                          (selectedDay,
+                                                              focusedDay) {
+                                                        _startDateController
+                                                                .text =
+                                                            selectedDay
+                                                                .toString()
+                                                                .substring(
+                                                                    0, 10);
+                                                        Navigator.pop(context);
+                                                      },
+                                                    ),
                                                   ),
-                                                ),
-                                              );
-                                            });
-                                      },
-                                      icon: Icon(Icons.calendar_month),
+                                                );
+                                              });
+                                        },
+                                        icon: const Icon(Icons.calendar_today),
+                                      ),
                                     ),
                                   ),
                                 ),
                               ),
-                            ),
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            Container(
-                              height: 70,
-                              width: 250,
-                              child: TextFormField(
-                                controller: _dateController2,
-                                decoration: InputDecoration(
-                                  enabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(20),
-                                    borderSide: BorderSide(),
-                                  ),
-                                  border: OutlineInputBorder(
-                                    borderSide: const BorderSide(
-                                        color: Colors.blue, width: 2),
-                                    borderRadius: BorderRadius.circular(20),
-                                  ),
-                                  labelText: 'Tanggal Awal',
-                                  prefixIcon: Padding(
-                                    padding: const EdgeInsets.all(
-                                        10), // add padding to adjust icon
-                                    child: IconButton(
-                                      onPressed: () {
-                                        showDialog(
-                                            context: context,
-                                            builder: (BuildContext context) {
-                                              return AlertDialog(
-                                                content: Container(
-                                                  height: MediaQuery.of(context)
-                                                          .size
-                                                          .height /
-                                                      2,
-                                                  width: MediaQuery.of(context)
-                                                      .size
-                                                      .width,
-                                                  child: TableCalendar(
-                                                    firstDay: DateTime.utc(
-                                                        2010, 10, 16),
-                                                    lastDay: DateTime.utc(
-                                                        2030, 3, 14),
-                                                    focusedDay: DateTime.now(),
-                                                    onDaySelected: (selectedDay,
-                                                        focusedDay) {
-                                                      _dateController2.text =
-                                                          selectedDay
-                                                              .toString()
-                                                              .substring(0, 10);
-                                                      Navigator.pop(context);
-                                                    },
+                              const SizedBox(
+                                height: 20,
+                              ),
+                              SizedBox(
+                                height: 70,
+                                width: 250,
+                                child: TextFormField(
+                                  controller: _endDateController,
+                                  readOnly: true,
+                                  decoration: InputDecoration(
+                                    enabledBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(20),
+                                      borderSide: const BorderSide(),
+                                    ),
+                                    border: OutlineInputBorder(
+                                      borderSide: const BorderSide(
+                                          color: Colors.blue, width: 2),
+                                      borderRadius: BorderRadius.circular(20),
+                                    ),
+                                    labelText: 'Tanggal Akhir',
+                                    prefixIcon: Padding(
+                                      padding: const EdgeInsets.all(
+                                          10), // add padding to adjust icon
+                                      child: IconButton(
+                                        onPressed: () {
+                                          showDialog(
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                return AlertDialog(
+                                                  content: SizedBox(
+                                                    height:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .height /
+                                                            2,
+                                                    width:
+                                                        MediaQuery.of(context)
+                                                            .size
+                                                            .width,
+                                                    child: TableCalendar(
+                                                      firstDay: DateTime.utc(
+                                                          2010, 10, 16),
+                                                      lastDay: DateTime.utc(
+                                                          2030, 3, 14),
+                                                      focusedDay:
+                                                          DateTime.now(),
+                                                      onDaySelected:
+                                                          (selectedDay,
+                                                              focusedDay) {
+                                                        _endDateController
+                                                                .text =
+                                                            selectedDay
+                                                                .toString()
+                                                                .substring(
+                                                                    0, 10);
+                                                        Navigator.pop(context);
+                                                      },
+                                                    ),
                                                   ),
-                                                ),
-                                              );
-                                            });
-                                      },
-                                      icon: Icon(Icons.calendar_month),
+                                                );
+                                              });
+                                        },
+                                        icon: const Icon(Icons.calendar_month),
+                                      ),
                                     ),
                                   ),
                                 ),
                               ),
-                            ),
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            SizedBox(
-                              width: double.infinity,
-                              child: DropdownButtonFormField(
-                                decoration: InputDecoration(
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: const BorderSide(
-                                        color: Color.fromARGB(255, 61, 61, 61),
-                                        width: 1),
-                                    borderRadius: BorderRadius.circular(20),
-                                  ),
-                                  border: OutlineInputBorder(
-                                    borderSide: const BorderSide(
-                                        color: Colors.blue, width: 1),
-                                    borderRadius: BorderRadius.circular(20),
-                                  ),
-                                ),
-                                icon: Icon(Icons.arrow_downward_rounded),
-                                value: selectedValue,
-                                items: dropdownItems,
-                                onChanged: (String? value) {},
-                                isExpanded: true,
+                              const SizedBox(
+                                height: 20,
                               ),
-                            ),
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            Container(
-                              height: 70,
-                              width: 250,
-                              child: TextFormField(
-                                keyboardType: TextInputType.multiline,
-                                minLines:
-                                    1, //Normal textInputField will be displayed
-                                maxLines:
-                                    5, // when user presses enter it will adapt to it
-                                decoration: InputDecoration(
-                                  enabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(20),
-                                    borderSide: BorderSide(),
+                              SizedBox(
+                                width: 252,
+                                child: DropdownButtonFormField<String>(
+                                  decoration: InputDecoration(
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: const BorderSide(
+                                          color:
+                                              Color.fromARGB(255, 61, 61, 61),
+                                          width: 1),
+                                      borderRadius: BorderRadius.circular(20),
+                                    ),
+                                    border: OutlineInputBorder(
+                                      borderSide: const BorderSide(
+                                          color: Colors.blue, width: 1),
+                                      borderRadius: BorderRadius.circular(20),
+                                    ),
+                                    prefixIcon: Padding(
+                                      padding: const EdgeInsets.all(
+                                          10), // add padding to adjust icon
+                                      child: IconButton(
+                                        onPressed: () {},
+                                        icon: const Icon(Icons.email_outlined),
+                                      ),
+                                    ),
                                   ),
-                                  border: OutlineInputBorder(
-                                    borderSide: const BorderSide(
-                                        color: Colors.blue, width: 2),
-                                    borderRadius: BorderRadius.circular(20),
-                                  ),
-                                  labelText: 'Rincial Alasan',
-                                  prefixIcon: Padding(
-                                    padding: const EdgeInsets.all(
-                                        10), // add padding to adjust icon
-                                    child: IconButton(
-                                      onPressed: () {},
-                                      icon: Icon(Icons.email_sharp),
+                                  icon:
+                                      const Icon(Icons.arrow_downward_rounded),
+                                  value: selectedValue,
+                                  items: dropdownItems,
+                                  onChanged: (String? value) {
+                                    setState(() {
+                                      selectedValue = value.toString();
+                                    });
+                                  },
+                                  isExpanded: true,
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 20,
+                              ),
+                              SizedBox(
+                                height: 70,
+                                width: 250,
+                                child: TextFormField(
+                                  controller: _rincianAlasan,
+                                  keyboardType: TextInputType.multiline,
+                                  minLines:
+                                      1, //Normal textInputField will be displayed
+                                  maxLines:
+                                      5, // when user presses enter it will adapt to it
+                                  decoration: InputDecoration(
+                                    enabledBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(20),
+                                      borderSide: const BorderSide(),
+                                    ),
+                                    border: OutlineInputBorder(
+                                      borderSide: const BorderSide(
+                                          color: Colors.blue, width: 2),
+                                      borderRadius: BorderRadius.circular(20),
+                                    ),
+                                    labelText: 'Rincian Alasan',
+                                    prefixIcon: Padding(
+                                      padding: const EdgeInsets.all(
+                                          10), // add padding to adjust icon
+                                      child: IconButton(
+                                        onPressed: () {},
+                                        icon: const Icon(Icons.email_sharp),
+                                      ),
                                     ),
                                   ),
                                 ),
                               ),
-                            ),
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    primary: Colors.green,
-                                    onPrimary: Colors.white,
-                                    shadowColor: Colors.greenAccent,
-                                    elevation: 3,
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(32.0)),
-                                    minimumSize: Size(240, 60), //////// HERE
-                                  ),
-                                  onPressed: () {},
-                                  child: const Text(
-                                    'Kirim',
-                                    style: TextStyle(fontSize: 20),
-                                  ),
-                                )
-                              ],
-                            )
-                          ],
-                        )
-                      ],
+                              const SizedBox(
+                                height: 20,
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      primary: Colors.green,
+                                      onPrimary: Colors.white,
+                                      shadowColor: Colors.greenAccent,
+                                      elevation: 3,
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(32.0)),
+                                      minimumSize:
+                                          const Size(240, 60), //////// HERE
+                                    ),
+                                    onPressed: () {
+                                      FirebaseFirestore.instance
+                                          .collection("history_cuti")
+                                          .add({
+                                        "tanggal_awal":
+                                            _startDateController.text,
+                                        "tanggal_akhir":
+                                            _endDateController.text,
+                                        "alasan": selectedValue,
+                                        "rincian_alasan": _rincianAlasan.text,
+                                        "uid": user!.uid,
+                                      });
+                                    },
+                                    child: const Text(
+                                      'Kirim',
+                                      style: TextStyle(fontSize: 20),
+                                    ),
+                                  )
+                                ],
+                              )
+                            ],
+                          )
+                        ],
+                      ),
                     ),
                   );
                 },
@@ -358,6 +410,7 @@ class _ButtomNavbarState extends State<ButtomNavbar> {
     );
   }
 
+// ===== METHOD LOGOUT ====
   Future<void> logout(BuildContext context) async {
     const CircularProgressIndicator();
     await FirebaseAuth.instance.signOut();
@@ -369,4 +422,23 @@ class _ButtomNavbarState extends State<ButtomNavbar> {
       ),
     );
   }
+
+  // postDetailsToFirestore(String tanggal_awal, String tanggal_akhir,
+  //     String alasan, String rincial_alasan) async {
+  //   FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
+  //   var user = _auth.currentUser;
+  //   CollectionReference ref = FirebaseFirestore.instance.collection('users');
+  //   ref.doc(user!.uid).set({
+  //     'tanggal_awal': tanggal_awal,
+  //     'tanggal_akhir': tanggal_akhir,
+  //     'alasan': alasan,
+  //     'rincial_alasan': rincial_alasan
+  //   });
+  //   Navigator.pushReplacement(
+  //     context,
+  //     MaterialPageRoute(
+  //       builder: (context) => HistoryCuti(),
+  //     ),
+  //   );
+  // }
 }
