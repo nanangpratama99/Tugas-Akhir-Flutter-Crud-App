@@ -1,4 +1,6 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cuti_app/Screen/Admin/RoutePage/AkunTerdaftar.dart';
 import 'package:cuti_app/constatns/colors.dart';
 import 'package:cuti_app/constatns/colors.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -18,20 +20,22 @@ class HrdPage extends StatefulWidget {
 class _HrdPageState extends State<HrdPage> {
   @override
   Widget build(BuildContext context) {
+    var user = FirebaseAuth.instance.currentUser;
+
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 230, 230, 230),
       appBar: AppBar(
         backgroundColor: Colors.deepPurple,
         elevation: 0,
-        title: new Text('App Name'),
+        title: const Text('HRD Dashboard'),
         actions: [
           // action button
           IconButton(
-            icon: Icon(Icons.logout),
+            icon: const Icon(Icons.logout),
             onPressed: () {
               AwesomeDialog(
                 context: context,
-                dialogType: DialogType.info,
+                dialogType: DialogType.warning,
                 animType: AnimType.rightSlide,
                 title: 'Logout!',
                 desc: 'Apa kamu yakin mau keluar?.............',
@@ -50,18 +54,18 @@ class _HrdPageState extends State<HrdPage> {
           ),
         ],
         leading: IconButton(
-          icon: Icon(Icons.person),
+          icon: const Icon(Icons.person),
           onPressed: () {},
         ),
       ),
-      body: Stack(
+      body: ListView(
         children: [
           Column(
             children: [
               Container(
                 height: 330,
                 width: MediaQuery.of(context).size.width,
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   borderRadius: BorderRadius.only(
                       bottomLeft: Radius.circular(100),
                       bottomRight: Radius.circular(100)),
@@ -78,55 +82,301 @@ class _HrdPageState extends State<HrdPage> {
                 ),
                 child: Column(
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        Container(
-                          margin: EdgeInsets.only(top: 40, left: 20),
-                          height: 100,
-                          width: 150,
-                          decoration: BoxDecoration(
-                            color: Colors.amber,
-                            borderRadius: BorderRadius.circular(25),
-                          ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(top: 40, right: 20),
-                          height: 100,
-                          width: 150,
-                          decoration: BoxDecoration(
-                            color: Colors.amber,
-                            borderRadius: BorderRadius.circular(25),
-                          ),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        Container(
-                          margin: EdgeInsets.only(top: 20, left: 20),
-                          height: 100,
-                          width: 150,
-                          decoration: BoxDecoration(
-                            color: Colors.amber,
-                            borderRadius: BorderRadius.circular(25),
-                          ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(top: 20, right: 20),
-                          height: 100,
-                          width: 150,
-                          decoration: BoxDecoration(
-                            color: Colors.amber,
-                            borderRadius: BorderRadius.circular(25),
-                          ),
-                        ),
-                      ],
-                    ),
+                    // STREAM BUILDER
+                    StreamBuilder<QuerySnapshot>(
+                        stream: FirebaseFirestore.instance
+                            .collection("users")
+                            .where('rool', isEqualTo: 'Karyawan')
+                            .snapshots(),
+                        builder: (context, snapshot) {
+                          if (snapshot.hasError) {
+                            return Center(
+                                child: Text(
+                                    'Terjadi kesalahan ${snapshot.error}'));
+                          } else if (snapshot.hasData) {
+                            int karyawan = snapshot.data!.docs.length;
+
+                            // RETURN WIDGET
+                            return Column(
+                              children: <Widget>[
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
+                                  children: <Widget>[
+                                    // ======== JUMLAH KARYAWAN ========
+                                    Container(
+                                      margin:
+                                          EdgeInsets.only(top: 40, left: 20),
+                                      height: 100,
+                                      width: 150,
+                                      decoration: BoxDecoration(
+                                        color: Colors.amber,
+                                        borderRadius: BorderRadius.circular(25),
+                                      ),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            '$karyawan',
+                                            style: const TextStyle(
+                                                fontSize: 30,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          SizedBox(
+                                            height: 10,
+                                          ),
+                                          Container(
+                                            height: 30,
+                                            width: 120,
+                                            decoration: BoxDecoration(
+                                                color: Color.fromARGB(
+                                                    255, 67, 67, 67),
+                                                borderRadius:
+                                                    BorderRadius.circular(20)),
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                Text(
+                                                  "Jumlah Karyawan",
+                                                  style: const TextStyle(
+                                                      fontSize: 13,
+                                                      color: Colors.white),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    // ======== JUMLAH CUTI ========
+                                    Container(
+                                      margin:
+                                          EdgeInsets.only(top: 40, right: 10),
+                                      height: 100,
+                                      width: 150,
+                                      decoration: BoxDecoration(
+                                        color: Colors.amber,
+                                        borderRadius: BorderRadius.circular(25),
+                                      ),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          StreamBuilder<QuerySnapshot>(
+                                              stream: FirebaseFirestore.instance
+                                                  .collection("history_cuti")
+                                                  .snapshots(),
+                                              builder: (context, snapshot) {
+                                                if (snapshot.hasError) {
+                                                  return Center(
+                                                      child: Text(
+                                                          'Terjadi kesalahan ${snapshot.error}'));
+                                                } else if (snapshot.hasData) {
+                                                  int jumCuti = snapshot
+                                                      .data!.docs.length;
+                                                  return Text(
+                                                    "$jumCuti",
+                                                    style: TextStyle(
+                                                        fontSize: 30,
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  );
+                                                }
+                                                return CircularProgressIndicator();
+                                              }),
+                                          SizedBox(
+                                            height: 10,
+                                          ),
+                                          Container(
+                                            height: 30,
+                                            width: 120,
+                                            decoration: BoxDecoration(
+                                                color: Color.fromARGB(
+                                                    255, 67, 67, 67),
+                                                borderRadius:
+                                                    BorderRadius.circular(20)),
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                Text(
+                                                  "Jumlah Cuti",
+                                                  style: const TextStyle(
+                                                      fontSize: 13,
+                                                      color: Colors.white),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
+                                  children: <Widget>[
+                                    // ======== CUTI DI APPROVE ========
+                                    Container(
+                                      margin:
+                                          EdgeInsets.only(top: 40, left: 20),
+                                      height: 100,
+                                      width: 150,
+                                      decoration: BoxDecoration(
+                                        color: Colors.amber,
+                                        borderRadius: BorderRadius.circular(25),
+                                      ),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          StreamBuilder<QuerySnapshot>(
+                                              stream: FirebaseFirestore.instance
+                                                  .collection("history_cuti")
+                                                  .where('status',
+                                                      isEqualTo: 'Approved')
+                                                  .snapshots(),
+                                              builder: (context, snapshot) {
+                                                if (snapshot.hasError) {
+                                                  return Center(
+                                                      child: Text(
+                                                          'Terjadi kesalahan ${snapshot.error}'));
+                                                } else if (snapshot.hasData) {
+                                                  int cutiApproved = snapshot
+                                                      .data!.docs.length;
+                                                  return Text(
+                                                    "$cutiApproved",
+                                                    style: TextStyle(
+                                                        fontSize: 30,
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  );
+                                                }
+                                                return CircularProgressIndicator();
+                                              }),
+                                          SizedBox(
+                                            height: 10,
+                                          ),
+                                          Container(
+                                            height: 30,
+                                            width: 120,
+                                            decoration: BoxDecoration(
+                                                color: Color.fromARGB(
+                                                    255, 67, 67, 67),
+                                                borderRadius:
+                                                    BorderRadius.circular(20)),
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                Text(
+                                                  "Cuti di Approve",
+                                                  style: const TextStyle(
+                                                      fontSize: 13,
+                                                      color: Colors.white),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    // ======== CUTI DI REJECT ========
+                                    Container(
+                                      margin:
+                                          EdgeInsets.only(top: 40, right: 10),
+                                      height: 100,
+                                      width: 150,
+                                      decoration: BoxDecoration(
+                                        color: Colors.amber,
+                                        borderRadius: BorderRadius.circular(25),
+                                      ),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          StreamBuilder<QuerySnapshot>(
+                                              stream: FirebaseFirestore.instance
+                                                  .collection("history_cuti")
+                                                  .where('status',
+                                                      isEqualTo: 'Reject')
+                                                  .snapshots(),
+                                              builder: (context, snapshot) {
+                                                if (snapshot.hasError) {
+                                                  return Center(
+                                                      child: Text(
+                                                          'Terjadi kesalahan ${snapshot.error}'));
+                                                } else if (snapshot.hasData) {
+                                                  int cutiRejected = snapshot
+                                                      .data!.docs.length;
+                                                  return Text(
+                                                    "$cutiRejected",
+                                                    style: TextStyle(
+                                                        fontSize: 30,
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  );
+                                                }
+                                                return CircularProgressIndicator();
+                                              }),
+                                          SizedBox(
+                                            height: 10,
+                                          ),
+                                          Container(
+                                            height: 30,
+                                            width: 120,
+                                            decoration: BoxDecoration(
+                                                color: Color.fromARGB(
+                                                    255, 67, 67, 67),
+                                                borderRadius:
+                                                    BorderRadius.circular(20)),
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                Text(
+                                                  "Cuti di Reject",
+                                                  style: const TextStyle(
+                                                      fontSize: 13,
+                                                      color: Colors.white),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            );
+                          }
+                          return const CircularProgressIndicator();
+                        }),
                   ],
                 ),
               ),
+
+              // LIST MENU
               SingleChildScrollView(
                 child: Column(
                   children: [
@@ -159,7 +409,7 @@ class _HrdPageState extends State<HrdPage> {
                                             color: Colors.amber,
                                             borderRadius:
                                                 BorderRadius.circular(20)),
-                                        child: Icon(
+                                        child: const Icon(
                                           Icons.person,
                                           size: 50,
                                           color:
@@ -168,16 +418,16 @@ class _HrdPageState extends State<HrdPage> {
                                       )
                                     ],
                                   ),
-                                  SizedBox(
+                                  const SizedBox(
                                     width: 10,
                                   ),
-                                  Text(
+                                  const Text(
                                     "Akun Terdaftar",
                                     style: TextStyle(
                                         fontSize: 25,
                                         fontWeight: FontWeight.w500),
                                   ),
-                                  SizedBox(
+                                  const SizedBox(
                                     width: 10,
                                   ),
                                   Column(
@@ -187,8 +437,16 @@ class _HrdPageState extends State<HrdPage> {
                                         padding:
                                             const EdgeInsets.only(right: 10),
                                         child: IconButton(
-                                          onPressed: () {},
-                                          icon: Icon(
+                                          onPressed: () {
+                                            Navigator.pushReplacement(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    AkunTerdaftar(),
+                                              ),
+                                            );
+                                          },
+                                          icon: const Icon(
                                             Icons.arrow_circle_right_sharp,
                                             size: 40,
                                             color: Color.fromARGB(
@@ -220,34 +478,38 @@ class _HrdPageState extends State<HrdPage> {
                                   Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      Container(
-                                        margin: EdgeInsets.only(left: 20),
-                                        height: 80,
-                                        width: 80,
-                                        decoration: BoxDecoration(
-                                            color: Colors.amber,
-                                            borderRadius:
-                                                BorderRadius.circular(20)),
-                                        child: Icon(
-                                          Icons.person,
-                                          size: 50,
-                                          color:
-                                              Color.fromARGB(255, 40, 38, 38),
-                                        ),
-                                      )
+                                      Row(
+                                        children: [
+                                          Container(
+                                            margin: EdgeInsets.only(left: 20),
+                                            height: 80,
+                                            width: 80,
+                                            decoration: BoxDecoration(
+                                                color: Colors.amber,
+                                                borderRadius:
+                                                    BorderRadius.circular(20)),
+                                            child: const Icon(
+                                              Icons.checklist,
+                                              size: 50,
+                                              color: Color.fromARGB(
+                                                  255, 40, 38, 38),
+                                            ),
+                                          ),
+                                          const SizedBox(
+                                            width: 15,
+                                          ),
+                                          const Text(
+                                            "Approval",
+                                            style: TextStyle(
+                                                fontSize: 25,
+                                                fontWeight: FontWeight.w500),
+                                          ),
+                                        ],
+                                      ),
                                     ],
                                   ),
-                                  SizedBox(
-                                    width: 10,
-                                  ),
-                                  Text(
-                                    "Approval",
-                                    style: TextStyle(
-                                        fontSize: 25,
-                                        fontWeight: FontWeight.w500),
-                                  ),
-                                  SizedBox(
-                                    width: 10,
+                                  const SizedBox(
+                                    width: 65,
                                   ),
                                   Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
@@ -257,6 +519,7 @@ class _HrdPageState extends State<HrdPage> {
                                             const EdgeInsets.only(right: 10),
                                         child: IconButton(
                                           onPressed: () {},
+                                          // ignore: prefer_const_constructors
                                           icon: Icon(
                                             Icons.arrow_circle_right_sharp,
                                             size: 40,
@@ -285,8 +548,9 @@ class _HrdPageState extends State<HrdPage> {
   }
 
   Future<void> logout(BuildContext context) async {
-    CircularProgressIndicator();
+    const CircularProgressIndicator();
     await FirebaseAuth.instance.signOut();
+    // ignore: use_build_context_synchronously
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(

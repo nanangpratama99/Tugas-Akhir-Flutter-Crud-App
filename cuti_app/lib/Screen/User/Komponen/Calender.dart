@@ -15,9 +15,9 @@ class CalenderMenu extends StatelessWidget {
           child: Column(
             children: [
               Row(
-                children: [
+                children: const [
                   Padding(
-                    padding: const EdgeInsets.only(left: 40),
+                    padding: EdgeInsets.only(left: 40),
                     child: Text(
                       "Calender",
                       style: TextStyle(fontSize: 40),
@@ -32,9 +32,9 @@ class CalenderMenu extends StatelessWidget {
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
-                children: [
+                children: const [
                   Padding(
-                    padding: const EdgeInsets.only(left: 40, top: 30),
+                    padding: EdgeInsets.only(left: 40, top: 30),
                     child: Text(
                       "Event",
                       textAlign: TextAlign.left,
@@ -43,7 +43,7 @@ class CalenderMenu extends StatelessWidget {
                   ),
                 ],
               ),
-              SizedBox(
+              const SizedBox(
                 height: 15,
               ),
               Container(
@@ -67,7 +67,7 @@ class CalenderMenu extends StatelessWidget {
                                   decoration: BoxDecoration(
                                       color: Colors.white,
                                       borderRadius: BorderRadius.circular(40)),
-                                  child: Text(
+                                  child: const Text(
                                     "16",
                                     style: TextStyle(
                                         color: Colors.black54,
@@ -77,11 +77,11 @@ class CalenderMenu extends StatelessWidget {
                                 ),
                               ],
                             ),
-                            SizedBox(
+                            const SizedBox(
                               width: 10,
                             ),
                             Column(
-                              children: [
+                              children: const [
                                 Text(
                                   "Imlek",
                                   style: TextStyle(
@@ -112,7 +112,7 @@ class CalenderMenu extends StatelessWidget {
                                   decoration: BoxDecoration(
                                       color: Colors.white,
                                       borderRadius: BorderRadius.circular(40)),
-                                  child: Text(
+                                  child: const Text(
                                     "17",
                                     style: TextStyle(
                                         color: Colors.black54,
@@ -126,7 +126,7 @@ class CalenderMenu extends StatelessWidget {
                               width: 10,
                             ),
                             Column(
-                              children: [
+                              children: const [
                                 Text(
                                   "Eid Al Adha",
                                   style: TextStyle(
@@ -157,7 +157,7 @@ class CalenderMenu extends StatelessWidget {
                                   decoration: BoxDecoration(
                                       color: Colors.white,
                                       borderRadius: BorderRadius.circular(40)),
-                                  child: Text(
+                                  child: const Text(
                                     "18",
                                     style: TextStyle(
                                         color: Colors.black54,
@@ -167,11 +167,11 @@ class CalenderMenu extends StatelessWidget {
                                 ),
                               ],
                             ),
-                            SizedBox(
+                            const SizedBox(
                               width: 10,
                             ),
                             Column(
-                              children: [
+                              children: const [
                                 Text(
                                   "Eid Mubarak",
                                   style: TextStyle(

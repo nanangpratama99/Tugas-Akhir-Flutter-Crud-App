@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cuti_app/Screen/User/RoutePage/Bio_Data.dart';
 import 'package:cuti_app/Screen/User/RoutePage/History_Cuti.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -46,6 +47,7 @@ class _CardMenuState extends State<CardMenu> {
                         stream: FirebaseFirestore.instance
                             .collection("history_cuti")
                             .where('uid', isEqualTo: user!.uid)
+                            .where('status', isEqualTo: 'Approved')
                             .snapshots(),
                         builder: (context, snapshot) {
                           if (snapshot.hasError) {
@@ -289,42 +291,58 @@ class _CardMenuState extends State<CardMenu> {
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Container(
-                        height: 50,
-                        width: 50,
-                        decoration: BoxDecoration(
-                          color: Colors.blue,
-                          borderRadius: BorderRadius.circular(15),
-                        ),
-                        child: const Icon(
-                          Icons.person,
-                          size: 40,
-                          color: Colors.white,
-                        ),
+                      Row(
+                        children: [
+                          Container(
+                            height: 50,
+                            width: 50,
+                            decoration: BoxDecoration(
+                              color: Colors.blue,
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                            child: const Icon(
+                              Icons.person,
+                              size: 40,
+                              color: Colors.white,
+                            ),
+                          ),
+                          SizedBox(
+                            width: 20,
+                          ),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Data Diri",
+                                style: TextStyle(fontSize: 25),
+                              ),
+                              Text("Klik untuk melihat\ndata diri anda"),
+                            ],
+                          ),
+                        ],
                       ),
                     ],
                   ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
-                      Text(
-                        "Data Diri",
-                        style: TextStyle(fontSize: 25),
-                      ),
-                      Text("Klik untuk melihat\ndata diri anda"),
-                    ],
-                  ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
-                      Icon(
+                  Padding(
+                    padding:
+                        const EdgeInsets.only(left: 55, bottom: 15, right: 10),
+                    child: IconButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const Bio_Data(),
+                          ),
+                        );
+                      },
+                      icon: Icon(
                         Icons.arrow_circle_right,
                         size: 50,
                         color: Colors.green,
                       ),
-                    ],
-                  )
+                    ),
+                  ),
                 ],
               ),
             ),

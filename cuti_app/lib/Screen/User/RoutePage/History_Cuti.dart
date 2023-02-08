@@ -1,3 +1,4 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -47,7 +48,6 @@ class HistoryCuti extends StatelessWidget {
                         child: Text('Terjadi kesalahan ${snapshot.error}'));
                   } else if (snapshot.hasData) {
                     int user = snapshot.data!.docs.length;
-                    int cccc = 12 - user;
 
                     // RETURN DATA
                     return Center(
@@ -55,7 +55,7 @@ class HistoryCuti extends StatelessWidget {
                           children: snapshot.data!.docs
                               .map(
                                 (e) => Container(
-                                  margin: EdgeInsets.only(bottom: 10),
+                                  margin: EdgeInsets.only(bottom: 15),
                                   width: 350,
                                   height: 200,
                                   decoration: BoxDecoration(
@@ -80,12 +80,10 @@ class HistoryCuti extends StatelessWidget {
                                           CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                            "Tanggal Awal : ${e['tanggal_awal']}"),
+                                            "Tanggal Cuti : ${e['tanggal_awal']}"),
                                         SizedBox(
                                           height: 5,
                                         ),
-                                        Text(
-                                            "Tanggal Akhir : ${e['tanggal_akhir']}"),
                                         SizedBox(
                                           height: 5,
                                         ),
@@ -118,12 +116,36 @@ class HistoryCuti extends StatelessWidget {
                                                     color: Colors.white),
                                               ),
                                               Text(
-                                                "Not Approv",
+                                                "${e['status']}",
                                                 style: TextStyle(
                                                     color: Colors.white),
                                               ),
-                                              Text("$user"),
-                                              Text("$cccc"),
+                                              IconButton(
+                                                onPressed: () {
+                                                  AwesomeDialog(
+                                                    context: context,
+                                                    dialogType:
+                                                        DialogType.warning,
+                                                    animType:
+                                                        AnimType.rightSlide,
+                                                    title: 'Hapus!',
+                                                    desc:
+                                                        'Apa kamu yakin mau menghapus?',
+                                                    btnCancelOnPress: () {},
+                                                    btnOkOnPress: () {
+                                                      FirebaseFirestore.instance
+                                                          .collection(
+                                                              "history_cuti")
+                                                          .doc(e.id)
+                                                          .delete();
+                                                    },
+                                                  ).show();
+                                                },
+                                                icon: const Icon(
+                                                  Icons.delete,
+                                                  color: Colors.amber,
+                                                ),
+                                              ),
                                             ],
                                           ),
                                         )

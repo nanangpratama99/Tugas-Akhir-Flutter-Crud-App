@@ -109,7 +109,7 @@ class _ButtomNavbarState extends State<ButtomNavbar> {
                   // Get available height and width of the build area of this widget. Make a choice depending on the size.
 
                   return SizedBox(
-                    height: 500,
+                    height: 450,
                     width: 400,
                     child: Form(
                       key: _formkey,
@@ -155,7 +155,7 @@ class _ButtomNavbarState extends State<ButtomNavbar> {
                                           color: Colors.blue, width: 2),
                                       borderRadius: BorderRadius.circular(20),
                                     ),
-                                    labelText: 'Tanggal Awal',
+                                    labelText: 'Tanggal Cuti',
                                     prefixIcon: Padding(
                                       padding: const EdgeInsets.all(
                                           10), // add padding to adjust icon
@@ -202,74 +202,6 @@ class _ButtomNavbarState extends State<ButtomNavbar> {
                                               });
                                         },
                                         icon: const Icon(Icons.calendar_today),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 20,
-                              ),
-                              SizedBox(
-                                height: 70,
-                                width: 250,
-                                child: TextFormField(
-                                  controller: _endDateController,
-                                  readOnly: true,
-                                  decoration: InputDecoration(
-                                    enabledBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(20),
-                                      borderSide: const BorderSide(),
-                                    ),
-                                    border: OutlineInputBorder(
-                                      borderSide: const BorderSide(
-                                          color: Colors.blue, width: 2),
-                                      borderRadius: BorderRadius.circular(20),
-                                    ),
-                                    labelText: 'Tanggal Akhir',
-                                    prefixIcon: Padding(
-                                      padding: const EdgeInsets.all(
-                                          10), // add padding to adjust icon
-                                      child: IconButton(
-                                        onPressed: () {
-                                          showDialog(
-                                              context: context,
-                                              builder: (BuildContext context) {
-                                                return AlertDialog(
-                                                  content: SizedBox(
-                                                    height:
-                                                        MediaQuery.of(context)
-                                                                .size
-                                                                .height /
-                                                            2,
-                                                    width:
-                                                        MediaQuery.of(context)
-                                                            .size
-                                                            .width,
-                                                    child: TableCalendar(
-                                                      firstDay: DateTime.utc(
-                                                          2010, 10, 16),
-                                                      lastDay: DateTime.utc(
-                                                          2030, 3, 14),
-                                                      focusedDay:
-                                                          DateTime.now(),
-                                                      onDaySelected:
-                                                          (selectedDay,
-                                                              focusedDay) {
-                                                        _endDateController
-                                                                .text =
-                                                            selectedDay
-                                                                .toString()
-                                                                .substring(
-                                                                    0, 10);
-                                                        Navigator.pop(context);
-                                                      },
-                                                    ),
-                                                  ),
-                                                );
-                                              });
-                                        },
-                                        icon: const Icon(Icons.calendar_month),
                                       ),
                                     ),
                                   ),
@@ -374,8 +306,8 @@ class _ButtomNavbarState extends State<ButtomNavbar> {
                                           .add({
                                         "tanggal_awal":
                                             _startDateController.text,
-                                        "tanggal_akhir":
-                                            _endDateController.text,
+                                        // "tanggal_akhir":
+                                        //     _endDateController.text,
                                         "alasan": selectedValue,
                                         "rincian_alasan": _rincianAlasan.text,
                                         "uid": user!.uid,
