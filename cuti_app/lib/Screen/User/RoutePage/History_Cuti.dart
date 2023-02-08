@@ -11,19 +11,20 @@ class HistoryCuti extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var user = FirebaseAuth.instance.currentUser;
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.deepPurple,
         centerTitle: true,
-        title: Text(
+        title: const Text(
           'History Cuti',
-          style: const TextStyle(fontSize: 30),
+          style: TextStyle(fontSize: 30),
         ),
         leading: IconButton(
           onPressed: () {
             Navigator.pop(context);
           },
-          icon: Icon(
+          icon: const Icon(
             Icons.arrow_circle_left_sharp,
             size: 40,
             color: Colors.white,
@@ -33,7 +34,7 @@ class HistoryCuti extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
 
@@ -41,6 +42,7 @@ class HistoryCuti extends StatelessWidget {
                 stream: FirebaseFirestore.instance
                     .collection("history_cuti")
                     .where('uid', isEqualTo: user!.uid)
+                    .where('status', isEqualTo: 'Pending')
                     .snapshots(),
                 builder: (context, snapshot) {
                   if (snapshot.hasError) {
@@ -55,7 +57,7 @@ class HistoryCuti extends StatelessWidget {
                           children: snapshot.data!.docs
                               .map(
                                 (e) => Container(
-                                  margin: EdgeInsets.only(bottom: 15),
+                                  margin: const EdgeInsets.only(bottom: 15),
                                   width: 350,
                                   height: 200,
                                   decoration: BoxDecoration(
@@ -66,7 +68,7 @@ class HistoryCuti extends StatelessWidget {
                                         color: Colors.grey.withOpacity(0.3),
                                         spreadRadius: 5,
                                         blurRadius: 10,
-                                        offset: Offset(
+                                        offset: const Offset(
                                             0, 9), // changes position of shadow
                                       ),
                                     ],
@@ -81,25 +83,25 @@ class HistoryCuti extends StatelessWidget {
                                       children: [
                                         Text(
                                             "Tanggal Cuti : ${e['tanggal_awal']}"),
-                                        SizedBox(
+                                        const SizedBox(
                                           height: 5,
                                         ),
-                                        SizedBox(
+                                        const SizedBox(
                                           height: 5,
                                         ),
                                         Text("Alasan : ${e['alasan']}"),
-                                        SizedBox(
+                                        const SizedBox(
                                           height: 5,
                                         ),
                                         Text(
                                             "Rincian Alasan : ${e['rincian_alasan']}"),
-                                        SizedBox(
+                                        const SizedBox(
                                           height: 30,
                                         ),
                                         Container(
                                           width: 500,
                                           height: 50,
-                                          decoration: BoxDecoration(
+                                          decoration: const BoxDecoration(
                                             color: Colors.deepPurple,
                                             borderRadius: BorderRadius.only(
                                               bottomLeft: Radius.circular(25),
@@ -110,14 +112,14 @@ class HistoryCuti extends StatelessWidget {
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceAround,
                                             children: [
-                                              Text(
+                                              const Text(
                                                 "Status",
                                                 style: TextStyle(
                                                     color: Colors.white),
                                               ),
                                               Text(
                                                 "${e['status']}",
-                                                style: TextStyle(
+                                                style: const TextStyle(
                                                     color: Colors.white),
                                               ),
                                               IconButton(
@@ -157,74 +159,6 @@ class HistoryCuti extends StatelessWidget {
                               .toList()),
                     );
                   }
-
-                  //   Container(
-                  //     width: 350,
-                  //     height: 200,
-                  //     decoration: BoxDecoration(
-                  //       color: Colors.white,
-                  //       borderRadius: BorderRadius.circular(35),
-                  //       boxShadow: [
-                  //         BoxShadow(
-                  //           color: Colors.grey.withOpacity(0.3),
-                  //           spreadRadius: 5,
-                  //           blurRadius: 10,
-                  //           offset: Offset(0, 9), // changes position of shadow
-                  //         ),
-                  //       ],
-                  //     ),
-                  //     child: Padding(
-                  //       padding: const EdgeInsets.all(20.0),
-                  //       child: Column(
-                  //         mainAxisAlignment: MainAxisAlignment.center,
-                  //         crossAxisAlignment: CrossAxisAlignment.start,
-                  //         children: [
-                  //           Text("Tanggal Awal : "),
-                  //           SizedBox(
-                  //             height: 5,
-                  //           ),
-                  //           Text("Tanggal Akhir : "),
-                  //           SizedBox(
-                  //             height: 5,
-                  //           ),
-                  //           Text("Alasan : "),
-                  //           SizedBox(
-                  //             height: 5,
-                  //           ),
-                  //           Text("Rincian Alasan : "),
-                  //           SizedBox(
-                  //             height: 30,
-                  //           ),
-                  //           Container(
-                  //             width: 500,
-                  //             height: 50,
-                  //             decoration: BoxDecoration(
-                  //               color: Colors.deepPurple,
-                  //               borderRadius: BorderRadius.only(
-                  //                 bottomLeft: Radius.circular(25),
-                  //                 bottomRight: Radius.circular(25),
-                  //               ),
-                  //             ),
-                  //             child: Row(
-                  //               mainAxisAlignment:
-                  //                   MainAxisAlignment.spaceAround,
-                  //               children: [
-                  //                 Text(
-                  //                   "Status",
-                  //                   style: TextStyle(color: Colors.white),
-                  //                 ),
-                  //                 Text(
-                  //                   "Not Approv",
-                  //                   style: TextStyle(color: Colors.white),
-                  //                 ),
-                  //               ],
-                  //             ),
-                  //           )
-                  //         ],
-                  //       ),
-                  //     ),
-                  //   );
-                  // }
                   return const CircularProgressIndicator();
                 }),
 

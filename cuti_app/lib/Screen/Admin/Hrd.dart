@@ -1,6 +1,9 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cuti_app/Screen/Admin/RoutePage/AkunTerdaftar.dart';
+import 'package:cuti_app/Screen/Admin/RoutePage/Approval.dart';
+import 'package:cuti_app/Screen/Admin/RoutePage/ApprovePage.dart';
+import 'package:cuti_app/Screen/Admin/RoutePage/RejectPage.dart';
 import 'package:cuti_app/constatns/colors.dart';
 import 'package:cuti_app/constatns/colors.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -24,38 +27,41 @@ class _HrdPageState extends State<HrdPage> {
 
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 230, 230, 230),
-      appBar: AppBar(
-        backgroundColor: Colors.deepPurple,
-        elevation: 0,
-        title: const Text('HRD Dashboard'),
-        actions: [
-          // action button
-          IconButton(
-            icon: const Icon(Icons.logout),
-            onPressed: () {
-              AwesomeDialog(
-                context: context,
-                dialogType: DialogType.warning,
-                animType: AnimType.rightSlide,
-                title: 'Logout!',
-                desc: 'Apa kamu yakin mau keluar?.............',
-                btnCancelOnPress: () {},
-                btnOkOnPress: () {
-                  logout(context);
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => LoginPage(),
-                    ),
-                  );
-                },
-              ).show();
-            },
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(65.0),
+        child: AppBar(
+          backgroundColor: Colors.deepPurple,
+          elevation: 0,
+          title: const Text('HRD Dashboard'),
+          actions: [
+            // action button
+            IconButton(
+              icon: const Icon(Icons.logout),
+              onPressed: () {
+                AwesomeDialog(
+                  context: context,
+                  dialogType: DialogType.warning,
+                  animType: AnimType.rightSlide,
+                  title: 'Logout!',
+                  desc: 'Apa kamu yakin mau keluar?.',
+                  btnCancelOnPress: () {},
+                  btnOkOnPress: () {
+                    logout(context);
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => LoginPage(),
+                      ),
+                    );
+                  },
+                ).show();
+              },
+            ),
+          ],
+          leading: IconButton(
+            icon: const Icon(Icons.person),
+            onPressed: () {},
           ),
-        ],
-        leading: IconButton(
-          icon: const Icon(Icons.person),
-          onPressed: () {},
         ),
       ),
       body: ListView(
@@ -228,141 +234,168 @@ class _HrdPageState extends State<HrdPage> {
                                       MainAxisAlignment.spaceAround,
                                   children: <Widget>[
                                     // ======== CUTI DI APPROVE ========
-                                    Container(
-                                      margin:
-                                          EdgeInsets.only(top: 40, left: 20),
-                                      height: 100,
-                                      width: 150,
-                                      decoration: BoxDecoration(
-                                        color: Colors.amber,
-                                        borderRadius: BorderRadius.circular(25),
-                                      ),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          StreamBuilder<QuerySnapshot>(
-                                              stream: FirebaseFirestore.instance
-                                                  .collection("history_cuti")
-                                                  .where('status',
-                                                      isEqualTo: 'Approved')
-                                                  .snapshots(),
-                                              builder: (context, snapshot) {
-                                                if (snapshot.hasError) {
-                                                  return Center(
-                                                      child: Text(
-                                                          'Terjadi kesalahan ${snapshot.error}'));
-                                                } else if (snapshot.hasData) {
-                                                  int cutiApproved = snapshot
-                                                      .data!.docs.length;
-                                                  return Text(
-                                                    "$cutiApproved",
-                                                    style: TextStyle(
-                                                        fontSize: 30,
-                                                        fontWeight:
-                                                            FontWeight.bold),
-                                                  );
-                                                }
-                                                return CircularProgressIndicator();
-                                              }),
-                                          SizedBox(
-                                            height: 10,
+                                    GestureDetector(
+                                      onTap: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                const ApprovePage(),
                                           ),
-                                          Container(
-                                            height: 30,
-                                            width: 120,
-                                            decoration: BoxDecoration(
-                                                color: Color.fromARGB(
-                                                    255, 67, 67, 67),
-                                                borderRadius:
-                                                    BorderRadius.circular(20)),
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.center,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                Text(
-                                                  "Cuti di Approve",
-                                                  style: const TextStyle(
-                                                      fontSize: 13,
-                                                      color: Colors.white),
-                                                ),
-                                              ],
+                                        );
+                                      },
+                                      child: Container(
+                                        margin:
+                                            EdgeInsets.only(top: 40, left: 20),
+                                        height: 100,
+                                        width: 150,
+                                        decoration: BoxDecoration(
+                                          color: Colors.amber,
+                                          borderRadius:
+                                              BorderRadius.circular(25),
+                                        ),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            StreamBuilder<QuerySnapshot>(
+                                                stream: FirebaseFirestore
+                                                    .instance
+                                                    .collection("history_cuti")
+                                                    .where('status',
+                                                        isEqualTo: 'Approved')
+                                                    .snapshots(),
+                                                builder: (context, snapshot) {
+                                                  if (snapshot.hasError) {
+                                                    return Center(
+                                                        child: Text(
+                                                            'Terjadi kesalahan ${snapshot.error}'));
+                                                  } else if (snapshot.hasData) {
+                                                    int cutiApproved = snapshot
+                                                        .data!.docs.length;
+                                                    return Text(
+                                                      "$cutiApproved",
+                                                      style: TextStyle(
+                                                          fontSize: 30,
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                    );
+                                                  }
+                                                  return CircularProgressIndicator();
+                                                }),
+                                            SizedBox(
+                                              height: 10,
                                             ),
-                                          ),
-                                        ],
+                                            Container(
+                                              height: 30,
+                                              width: 120,
+                                              decoration: BoxDecoration(
+                                                  color: Color.fromARGB(
+                                                      255, 67, 67, 67),
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          20)),
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  Text(
+                                                    "Cuti di Approve",
+                                                    style: const TextStyle(
+                                                        fontSize: 13,
+                                                        color: Colors.white),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                     ),
                                     // ======== CUTI DI REJECT ========
-                                    Container(
-                                      margin:
-                                          EdgeInsets.only(top: 40, right: 10),
-                                      height: 100,
-                                      width: 150,
-                                      decoration: BoxDecoration(
-                                        color: Colors.amber,
-                                        borderRadius: BorderRadius.circular(25),
-                                      ),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          StreamBuilder<QuerySnapshot>(
-                                              stream: FirebaseFirestore.instance
-                                                  .collection("history_cuti")
-                                                  .where('status',
-                                                      isEqualTo: 'Reject')
-                                                  .snapshots(),
-                                              builder: (context, snapshot) {
-                                                if (snapshot.hasError) {
-                                                  return Center(
-                                                      child: Text(
-                                                          'Terjadi kesalahan ${snapshot.error}'));
-                                                } else if (snapshot.hasData) {
-                                                  int cutiRejected = snapshot
-                                                      .data!.docs.length;
-                                                  return Text(
-                                                    "$cutiRejected",
-                                                    style: TextStyle(
-                                                        fontSize: 30,
-                                                        fontWeight:
-                                                            FontWeight.bold),
-                                                  );
-                                                }
-                                                return CircularProgressIndicator();
-                                              }),
-                                          SizedBox(
-                                            height: 10,
-                                          ),
-                                          Container(
-                                            height: 30,
-                                            width: 120,
-                                            decoration: BoxDecoration(
-                                                color: Color.fromARGB(
-                                                    255, 67, 67, 67),
-                                                borderRadius:
-                                                    BorderRadius.circular(20)),
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.center,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                Text(
-                                                  "Cuti di Reject",
-                                                  style: const TextStyle(
-                                                      fontSize: 13,
-                                                      color: Colors.white),
-                                                ),
-                                              ],
+                                    GestureDetector(
+                                      onTap: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  const RejectPage()),
+                                        );
+                                      },
+                                      child: Container(
+                                        margin:
+                                            EdgeInsets.only(top: 40, right: 10),
+                                        height: 100,
+                                        width: 150,
+                                        decoration: BoxDecoration(
+                                          color: Colors.amber,
+                                          borderRadius:
+                                              BorderRadius.circular(25),
+                                        ),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            StreamBuilder<QuerySnapshot>(
+                                                stream: FirebaseFirestore
+                                                    .instance
+                                                    .collection("history_cuti")
+                                                    .where('status',
+                                                        isEqualTo: 'Reject')
+                                                    .snapshots(),
+                                                builder: (context, snapshot) {
+                                                  if (snapshot.hasError) {
+                                                    return Center(
+                                                        child: Text(
+                                                            'Terjadi kesalahan ${snapshot.error}'));
+                                                  } else if (snapshot.hasData) {
+                                                    int cutiRejected = snapshot
+                                                        .data!.docs.length;
+                                                    return Text(
+                                                      "$cutiRejected",
+                                                      style: TextStyle(
+                                                          fontSize: 30,
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                    );
+                                                  }
+                                                  return CircularProgressIndicator();
+                                                }),
+                                            SizedBox(
+                                              height: 10,
                                             ),
-                                          ),
-                                        ],
+                                            Container(
+                                              height: 30,
+                                              width: 120,
+                                              decoration: BoxDecoration(
+                                                  color: Color.fromARGB(
+                                                      255, 67, 67, 67),
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          20)),
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  Text(
+                                                    "Cuti di Reject",
+                                                    style: const TextStyle(
+                                                        fontSize: 13,
+                                                        color: Colors.white),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                     ),
                                   ],
@@ -518,7 +551,14 @@ class _HrdPageState extends State<HrdPage> {
                                         padding:
                                             const EdgeInsets.only(right: 10),
                                         child: IconButton(
-                                          onPressed: () {},
+                                          onPressed: () {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      const ApprovalPage()),
+                                            );
+                                          },
                                           // ignore: prefer_const_constructors
                                           icon: Icon(
                                             Icons.arrow_circle_right_sharp,

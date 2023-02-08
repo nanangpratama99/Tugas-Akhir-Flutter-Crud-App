@@ -28,7 +28,6 @@ class _ButtomNavbarState extends State<ButtomNavbar> {
   final TextEditingController _rincianAlasan = TextEditingController();
   final TextEditingController _alasan = TextEditingController();
   final TextEditingController _startDateController = TextEditingController();
-  final TextEditingController _endDateController = TextEditingController();
 
   // LIST PAGE
   static const List<Widget> _widgetOptions = <Widget>[
@@ -311,6 +310,7 @@ class _ButtomNavbarState extends State<ButtomNavbar> {
                                         "alasan": selectedValue,
                                         "rincian_alasan": _rincianAlasan.text,
                                         "uid": user!.uid,
+                                        'status': 'Pending',
                                       });
                                     },
                                     child: const Text(

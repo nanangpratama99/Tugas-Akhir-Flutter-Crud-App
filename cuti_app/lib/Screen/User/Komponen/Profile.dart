@@ -62,14 +62,12 @@ class _ProfilMenuState extends State<ProfilMenu> {
                     // PARSING DATA
                     String nama = "${data['name']}";
                     String email = "${data['email']}";
-                    String password = "${data['password']}";
                     String imgUrl = "${data['imgUrl']}";
                     String nik = "${data['nik']}";
                     String alamat = "${data['alamat']}";
 
                     nameController.text = nama;
                     emailController.text = email;
-                    passwordController.text = password;
                     imgUrlController.text = imgUrl;
                     nikController.text = nik;
                     alamatController.text = alamat;
@@ -127,7 +125,7 @@ class _ProfilMenuState extends State<ProfilMenu> {
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(30),
                           ),
-                          height: MediaQuery.of(context).size.height / 1.5,
+                          height: MediaQuery.of(context).size.height / 1.8,
                           width: MediaQuery.of(context).size.width / 1,
                           child: Column(
                             children: [
@@ -181,32 +179,6 @@ class _ProfilMenuState extends State<ProfilMenu> {
                                                 10), // add padding to adjust icon
                                             child: Icon(
                                               Icons.email,
-                                              size: 35,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      const SizedBox(
-                                        height: 15,
-                                      ),
-                                      TextFormField(
-                                        controller: passwordController,
-                                        obscureText: true,
-                                        decoration: InputDecoration(
-                                          hintText: "Password",
-                                          enabledBorder: OutlineInputBorder(
-                                            borderSide: const BorderSide(
-                                              width: 2, //<-- SEE HERE
-                                              color: Colors.grey,
-                                            ),
-                                            borderRadius:
-                                                BorderRadius.circular(20.0),
-                                          ),
-                                          prefixIcon: const Padding(
-                                            padding: EdgeInsets.all(
-                                                10), // add padding to adjust icon
-                                            child: Icon(
-                                              Icons.lock,
                                               size: 35,
                                             ),
                                           ),
@@ -290,8 +262,6 @@ class _ProfilMenuState extends State<ProfilMenu> {
                                                 users.doc(user.uid).update({
                                                   "name": nameController.text,
                                                   "email": emailController.text,
-                                                  "password":
-                                                      passwordController.text,
                                                   "nik": nikController.text,
                                                   "alamat":
                                                       alamatController.text,

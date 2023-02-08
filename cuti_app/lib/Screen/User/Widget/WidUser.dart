@@ -105,7 +105,7 @@ class _WidUserState extends State<WidUser> {
                   onPressed: () {
                     AwesomeDialog(
                       context: context,
-                      dialogType: DialogType.info,
+                      dialogType: DialogType.warning,
                       animType: AnimType.rightSlide,
                       title: 'Logout!',
                       desc: 'Apa kamu yakin mau keluar?.............',

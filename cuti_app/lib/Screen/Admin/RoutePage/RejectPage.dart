@@ -1,4 +1,3 @@
-import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cuti_app/Screen/Admin/Hrd.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -6,24 +5,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 
-class ApprovalPage extends StatefulWidget {
-  const ApprovalPage({super.key});
+class RejectPage extends StatefulWidget {
+  const RejectPage({super.key});
 
   @override
-  State<ApprovalPage> createState() => _ApprovalPageState();
+  State<RejectPage> createState() => _RejectPageState();
 }
 
-class _ApprovalPageState extends State<ApprovalPage> {
+class _RejectPageState extends State<RejectPage> {
   @override
   Widget build(BuildContext context) {
     var user = FirebaseAuth.instance.currentUser;
-
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.deepPurple,
+        backgroundColor: Colors.deepPurpleAccent,
         centerTitle: true,
         title: const Text(
-          'Approval Page',
+          'Cuti Ditolak',
           style: TextStyle(fontSize: 30),
         ),
         leading: IconButton(
@@ -50,7 +48,7 @@ class _ApprovalPageState extends State<ApprovalPage> {
             StreamBuilder<QuerySnapshot>(
                 stream: FirebaseFirestore.instance
                     .collection("history_cuti")
-                    .where('status', isEqualTo: 'Pending')
+                    .where('status', isEqualTo: 'Reject')
                     .snapshots(),
                 builder: (context, snapshot) {
                   if (snapshot.hasError) {
@@ -67,7 +65,7 @@ class _ApprovalPageState extends State<ApprovalPage> {
                                 (e) => Container(
                                   margin: const EdgeInsets.only(bottom: 15),
                                   width: 350,
-                                  height: 210,
+                                  height: 200,
                                   decoration: BoxDecoration(
                                     color: Colors.white,
                                     borderRadius: BorderRadius.circular(35),
@@ -161,67 +159,36 @@ class _ApprovalPageState extends State<ApprovalPage> {
                                         Padding(
                                           padding: const EdgeInsets.symmetric(
                                               horizontal: 20),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Container(
-                                                width: 100,
-                                                height: 40,
-                                                decoration: BoxDecoration(
-                                                  color: Colors.green,
-                                                  borderRadius:
-                                                      BorderRadius.circular(10),
+                                        ),
+                                        Container(
+                                          height: 40,
+                                          width: 300,
+                                          decoration: BoxDecoration(
+                                              color: Colors.orange,
+                                              borderRadius:
+                                                  BorderRadius.circular(20)),
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(10),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Text(
+                                                  "Status",
+                                                  style: const TextStyle(
+                                                      color: Colors.white),
                                                 ),
-                                                child: IconButton(
-                                                  onPressed: () {
-                                                    CollectionReference cuti =
-                                                        FirebaseFirestore
-                                                            .instance
-                                                            .collection(
-                                                                "history_cuti");
-                                                    cuti.doc(e.id).update(
-                                                        {"status": "Approved"});
-                                                  },
-                                                  icon: const Text(
-                                                    "APPROVE",
-                                                    style: TextStyle(
-                                                        fontSize: 10,
-                                                        fontWeight:
-                                                            FontWeight.w600,
-                                                        color: Colors.white),
-                                                  ),
+                                                Divider(
+                                                  color: Colors.white,
                                                 ),
-                                              ),
-                                              Container(
-                                                width: 100,
-                                                height: 40,
-                                                decoration: BoxDecoration(
-                                                  color: Colors.orange,
-                                                  borderRadius:
-                                                      BorderRadius.circular(10),
+                                                Text(
+                                                  "Cuti Telah Ditolak",
+                                                  style: const TextStyle(
+                                                      color: Colors.white),
                                                 ),
-                                                child: IconButton(
-                                                  onPressed: () {
-                                                    CollectionReference cuti =
-                                                        FirebaseFirestore
-                                                            .instance
-                                                            .collection(
-                                                                "history_cuti");
-                                                    cuti.doc(e.id).update(
-                                                        {"status": "Reject"});
-                                                  },
-                                                  icon: const Text(
-                                                    "REJECT",
-                                                    style: TextStyle(
-                                                        fontSize: 10,
-                                                        fontWeight:
-                                                            FontWeight.w600,
-                                                        color: Colors.white),
-                                                  ),
-                                                ),
-                                              )
-                                            ],
+                                              ],
+                                            ),
                                           ),
                                         )
                                       ],

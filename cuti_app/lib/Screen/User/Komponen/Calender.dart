@@ -3,9 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-class CalenderMenu extends StatelessWidget {
+class CalenderMenu extends StatefulWidget {
   const CalenderMenu({super.key});
 
+  @override
+  State<CalenderMenu> createState() => _CalenderMenuState();
+}
+
+class _CalenderMenuState extends State<CalenderMenu> {
+  final TextEditingController pickIventController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,9 +32,15 @@ class CalenderMenu extends StatelessWidget {
                 ],
               ),
               TableCalendar(
+                headerStyle: HeaderStyle(formatButtonVisible: false),
                 firstDay: DateTime.utc(2010, 10, 16),
                 lastDay: DateTime.utc(2030, 3, 14),
                 focusedDay: DateTime.now(),
+                onDaySelected: (selectedDay, focusedDay) {
+                  pickIventController.text =
+                      selectedDay.toString().substring(0, 10);
+                  // Navigator.pop(context);
+                },
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -67,7 +79,7 @@ class CalenderMenu extends StatelessWidget {
                                   decoration: BoxDecoration(
                                       color: Colors.white,
                                       borderRadius: BorderRadius.circular(40)),
-                                  child: const Text(
+                                  child: Text(
                                     "16",
                                     style: TextStyle(
                                         color: Colors.black54,
@@ -81,7 +93,7 @@ class CalenderMenu extends StatelessWidget {
                               width: 10,
                             ),
                             Column(
-                              children: const [
+                              children: [
                                 Text(
                                   "Imlek",
                                   style: TextStyle(
