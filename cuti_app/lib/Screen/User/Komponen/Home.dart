@@ -41,11 +41,13 @@ class _HomeMenuState extends State<HomeMenu> {
         ),
       ),
       body: Container(
+        height: MediaQuery.of(context).size.height,
         decoration: const BoxDecoration(
           color: Color.fromARGB(255, 234, 234, 234),
         ),
         child: SingleChildScrollView(
           child: Column(
+            // WIDGET LIST
             children: [
               WidUser(),
               Column(
@@ -53,26 +55,13 @@ class _HomeMenuState extends State<HomeMenu> {
                   Row(
                     children: const [
                       Padding(
-                        padding: EdgeInsets.only(left: 20, top: 30),
-                        child: Text(
-                          "INFORMASI",
-                          style: TextStyle(
-                              color: Color.fromARGB(255, 74, 74, 74),
-                              fontSize: 20),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SliderInfo(),
-                  Row(
-                    children: const [
-                      Padding(
-                        padding: EdgeInsets.only(left: 20, top: 10),
+                        padding: EdgeInsets.only(left: 25, top: 10),
                         child: Text(
                           "CARD",
                           style: TextStyle(
                               color: Color.fromARGB(255, 74, 74, 74),
-                              fontSize: 20),
+                              fontSize: 30,
+                              fontWeight: FontWeight.w500),
                         ),
                       ),
                     ],

@@ -2,6 +2,8 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../../Provider/HidenPassword.dart';
 import '../../constatns/colors.dart';
 import 'Login.dart';
 
@@ -26,8 +28,6 @@ class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController confirmpassController = TextEditingController();
   final TextEditingController mobile = TextEditingController();
 
-  bool _isObscure = true;
-  bool _isObscure2 = true;
   File? file;
 
   // ROLE OPTIONS
@@ -73,312 +73,331 @@ class _RegisterPageState extends State<RegisterPage> {
                         padding: const EdgeInsets.all(25.0),
                         child: Form(
                           key: _formkey,
-                          child: Column(
-                            children: [
-                              const Text(
-                                "DAFTAR",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.grey,
-                                  fontSize: 40,
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 30,
-                              ),
-                              Column(
+                          child: MultiProvider(
+                            providers: [
+                              ChangeNotifierProvider(
+                                  create: (context) => IconState())
+                            ],
+                            child: Consumer<IconState>(
+                              builder: (context, hidenPassword, child) =>
+                                  Column(
                                 children: [
-                                  TextFormField(
-                                    controller: nameController,
-                                    decoration: InputDecoration(
-                                      filled: true,
-                                      fillColor: const Color.fromARGB(
-                                          255, 241, 241, 241),
-                                      hintText: 'Name',
-                                      enabled: true,
-                                      contentPadding: const EdgeInsets.only(
-                                          left: 15.0, bottom: 15.0, top: 15.0),
-                                      focusedBorder: OutlineInputBorder(
-                                        borderSide:
-                                            new BorderSide(color: Colors.white),
-                                        borderRadius:
-                                            new BorderRadius.circular(20),
-                                      ),
-                                      enabledBorder: UnderlineInputBorder(
-                                        borderSide:
-                                            new BorderSide(color: Colors.white),
-                                        borderRadius:
-                                            new BorderRadius.circular(20),
-                                      ),
+                                  const Text(
+                                    "DAFTAR",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.grey,
+                                      fontSize: 40,
                                     ),
-                                    style: TextStyle(fontSize: 25),
-                                    validator: (value) {
-                                      if (value!.length == 0 &&
-                                          value!.length < 3) {
-                                        return "Name harus di isi";
-                                      } else {
-                                        return null;
-                                      }
-                                    },
-                                    onChanged: (value) {},
-                                    keyboardType: TextInputType.emailAddress,
                                   ),
                                   const SizedBox(
-                                    height: 20,
-                                  ),
-                                  TextFormField(
-                                    controller: emailController,
-                                    decoration: InputDecoration(
-                                      filled: true,
-                                      fillColor: const Color.fromARGB(
-                                          255, 241, 241, 241),
-                                      hintText: 'Email',
-                                      enabled: true,
-                                      contentPadding: const EdgeInsets.only(
-                                          left: 15.0, bottom: 15.0, top: 15.0),
-                                      focusedBorder: OutlineInputBorder(
-                                        borderSide:
-                                            new BorderSide(color: Colors.white),
-                                        borderRadius:
-                                            new BorderRadius.circular(20),
-                                      ),
-                                      enabledBorder: UnderlineInputBorder(
-                                        borderSide:
-                                            new BorderSide(color: Colors.white),
-                                        borderRadius:
-                                            new BorderRadius.circular(20),
-                                      ),
-                                    ),
-                                    style: TextStyle(fontSize: 25),
-                                    validator: (value) {
-                                      if (value!.length == 0) {
-                                        return "Email cannot be empty";
-                                      }
-                                      if (!RegExp(
-                                              "^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]")
-                                          .hasMatch(value)) {
-                                        return ("Please enter a valid email");
-                                      } else {
-                                        return null;
-                                      }
-                                    },
-                                    onChanged: (value) {},
-                                    keyboardType: TextInputType.emailAddress,
-                                  ),
-                                  const SizedBox(
-                                    height: 20,
-                                  ),
-                                  TextFormField(
-                                    obscureText: _isObscure,
-                                    controller: passwordController,
-                                    decoration: InputDecoration(
-                                      fillColor: const Color.fromARGB(
-                                          255, 241, 241, 241),
-                                      suffixIcon: IconButton(
-                                          icon: Icon(_isObscure
-                                              ? Icons.visibility_off
-                                              : Icons.visibility),
-                                          onPressed: () {
-                                            setState(() {
-                                              _isObscure = !_isObscure;
-                                            });
-                                          }),
-                                      filled: true,
-                                      hintText: 'Password',
-                                      enabled: true,
-                                      contentPadding: const EdgeInsets.only(
-                                          left: 15.0, bottom: 15.0, top: 15.0),
-                                      focusedBorder: OutlineInputBorder(
-                                        borderSide:
-                                            new BorderSide(color: Colors.white),
-                                        borderRadius:
-                                            new BorderRadius.circular(20),
-                                      ),
-                                      enabledBorder: UnderlineInputBorder(
-                                        borderSide:
-                                            new BorderSide(color: Colors.white),
-                                        borderRadius:
-                                            new BorderRadius.circular(20),
-                                      ),
-                                    ),
-                                    style: TextStyle(fontSize: 25),
-                                    validator: (value) {
-                                      RegExp regex = new RegExp(r'^.{6,}$');
-                                      if (value!.isEmpty) {
-                                        return "Password cannot be empty";
-                                      }
-                                      if (!regex.hasMatch(value)) {
-                                        return ("please enter valid password min. 6 character");
-                                      } else {
-                                        return null;
-                                      }
-                                    },
-                                    onChanged: (value) {},
-                                  ),
-                                  const SizedBox(
-                                    height: 20,
-                                  ),
-                                  TextFormField(
-                                    obscureText: _isObscure2,
-                                    controller: confirmpassController,
-                                    decoration: InputDecoration(
-                                      fillColor: const Color.fromARGB(
-                                          255, 241, 241, 241),
-                                      suffixIcon: IconButton(
-                                          icon: Icon(_isObscure2
-                                              ? Icons.visibility_off
-                                              : Icons.visibility),
-                                          onPressed: () {
-                                            setState(() {
-                                              _isObscure2 = !_isObscure2;
-                                            });
-                                          }),
-                                      filled: true,
-                                      hintText: 'Confirm Password',
-                                      enabled: true,
-                                      contentPadding: const EdgeInsets.only(
-                                          left: 15.0, bottom: 15.0, top: 15.0),
-                                      focusedBorder: OutlineInputBorder(
-                                        borderSide:
-                                            new BorderSide(color: Colors.white),
-                                        borderRadius:
-                                            new BorderRadius.circular(20),
-                                      ),
-                                      enabledBorder: UnderlineInputBorder(
-                                        borderSide:
-                                            new BorderSide(color: Colors.white),
-                                        borderRadius:
-                                            new BorderRadius.circular(20),
-                                      ),
-                                    ),
-                                    style: TextStyle(fontSize: 25),
-                                    validator: (value) {
-                                      if (confirmpassController.text !=
-                                          passwordController.text) {
-                                        return "Password did not match";
-                                      } else {
-                                        return null;
-                                      }
-                                    },
-                                    onChanged: (value) {},
-                                  ),
-                                  const SizedBox(
-                                    height: 20,
-                                  ),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      const Text(
-                                        "Role : ",
-                                        style: TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                      DropdownButton<String>(
-                                        dropdownColor: Colors.blue[900],
-                                        isDense: true,
-                                        isExpanded: false,
-                                        iconEnabledColor: Colors.white,
-                                        focusColor: Colors.white,
-                                        items: options
-                                            .map((String dropDownStringItem) {
-                                          return DropdownMenuItem<String>(
-                                            value: dropDownStringItem,
-                                            child: Text(
-                                              dropDownStringItem,
-                                              style: const TextStyle(
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 20,
-                                              ),
-                                            ),
-                                          );
-                                        }).toList(),
-                                        onChanged: (newValueSelected) {
-                                          setState(() {
-                                            _currentItemSelected =
-                                                newValueSelected!;
-                                            rool = newValueSelected;
-                                          });
-                                        },
-                                        value: _currentItemSelected,
-                                      ),
-                                    ],
-                                  ),
-                                  const SizedBox(
-                                    height: 20,
+                                    height: 30,
                                   ),
                                   Column(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    crossAxisAlignment: CrossAxisAlignment.end,
                                     children: [
-                                      MaterialButton(
-                                        shape: const RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.all(
-                                            Radius.circular(20.0),
+                                      TextFormField(
+                                        controller: nameController,
+                                        decoration: InputDecoration(
+                                          filled: true,
+                                          fillColor: const Color.fromARGB(
+                                              255, 241, 241, 241),
+                                          hintText: 'Name',
+                                          enabled: true,
+                                          contentPadding: const EdgeInsets.only(
+                                              left: 15.0,
+                                              bottom: 15.0,
+                                              top: 15.0),
+                                          focusedBorder: OutlineInputBorder(
+                                            borderSide: new BorderSide(
+                                                color: Colors.white),
+                                            borderRadius:
+                                                new BorderRadius.circular(20),
+                                          ),
+                                          enabledBorder: UnderlineInputBorder(
+                                            borderSide: new BorderSide(
+                                                color: Colors.white),
+                                            borderRadius:
+                                                new BorderRadius.circular(20),
                                           ),
                                         ),
-                                        elevation: 5.0,
-                                        height: 60,
-                                        minWidth: 350,
-                                        onPressed: () {
-                                          setState(() {
-                                            showProgress = true;
-                                          });
-                                          signUp(
-                                              emailController.text,
-                                              passwordController.text,
-                                              rool,
-                                              nameController.text);
+                                        style: TextStyle(fontSize: 25),
+                                        validator: (value) {
+                                          if (value!.length == 0 &&
+                                              value!.length < 3) {
+                                            return "Name harus di isi";
+                                          } else {
+                                            return null;
+                                          }
                                         },
-                                        color: OrangeColor,
-                                        child: const Text(
-                                          "Daftar",
-                                          style: TextStyle(
-                                              fontSize: 25,
-                                              color: Colors.white),
-                                        ),
+                                        onChanged: (value) {},
+                                        keyboardType:
+                                            TextInputType.emailAddress,
                                       ),
                                       const SizedBox(
-                                        height: 10,
+                                        height: 20,
                                       ),
-                                      MaterialButton(
-                                        shape: const RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.all(
-                                            Radius.circular(20.0),
+                                      TextFormField(
+                                        controller: emailController,
+                                        decoration: InputDecoration(
+                                          filled: true,
+                                          fillColor: const Color.fromARGB(
+                                              255, 241, 241, 241),
+                                          hintText: 'Email',
+                                          enabled: true,
+                                          contentPadding: const EdgeInsets.only(
+                                              left: 15.0,
+                                              bottom: 15.0,
+                                              top: 15.0),
+                                          focusedBorder: OutlineInputBorder(
+                                            borderSide: new BorderSide(
+                                                color: Colors.white),
+                                            borderRadius:
+                                                new BorderRadius.circular(20),
+                                          ),
+                                          enabledBorder: UnderlineInputBorder(
+                                            borderSide: new BorderSide(
+                                                color: Colors.white),
+                                            borderRadius:
+                                                new BorderRadius.circular(20),
                                           ),
                                         ),
-                                        elevation: 5.0,
-                                        height: 60,
-                                        minWidth: 350,
-                                        onPressed: () {
-                                          const CircularProgressIndicator();
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) => LoginPage(),
-                                            ),
-                                          );
+                                        style: TextStyle(fontSize: 25),
+                                        validator: (value) {
+                                          if (value!.length == 0) {
+                                            return "Email tidak boleh kosong";
+                                          }
+                                          if (!RegExp(
+                                                  "^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]")
+                                              .hasMatch(value)) {
+                                            return ("Please enter a valid email");
+                                          } else {
+                                            return null;
+                                          }
                                         },
-                                        color: PurpleColor,
-                                        child: const Text(
-                                          "Masuk",
-                                          style: TextStyle(
-                                              fontSize: 25,
-                                              color: Colors.white),
+                                        onChanged: (value) {},
+                                        keyboardType:
+                                            TextInputType.emailAddress,
+                                      ),
+                                      const SizedBox(
+                                        height: 20,
+                                      ),
+                                      TextFormField(
+                                        obscureText: hidenPassword.getIsVisible,
+                                        controller: passwordController,
+                                        decoration: InputDecoration(
+                                          fillColor: const Color.fromARGB(
+                                              255, 241, 241, 241),
+                                          suffixIcon: IconButton(
+                                              icon: Icon(hidenPassword.getIcon),
+                                              onPressed: () {
+                                                hidenPassword.setIcon =
+                                                    !hidenPassword.getIsVisible;
+                                              }),
+                                          filled: true,
+                                          hintText: 'Password',
+                                          enabled: true,
+                                          contentPadding: const EdgeInsets.only(
+                                              left: 15.0,
+                                              bottom: 15.0,
+                                              top: 15.0),
+                                          focusedBorder: OutlineInputBorder(
+                                            borderSide: new BorderSide(
+                                                color: Colors.white),
+                                            borderRadius:
+                                                new BorderRadius.circular(20),
+                                          ),
+                                          enabledBorder: UnderlineInputBorder(
+                                            borderSide: new BorderSide(
+                                                color: Colors.white),
+                                            borderRadius:
+                                                new BorderRadius.circular(20),
+                                          ),
                                         ),
+                                        style: TextStyle(fontSize: 25),
+                                        validator: (value) {
+                                          RegExp regex = new RegExp(r'^.{6,}$');
+                                          if (value!.isEmpty) {
+                                            return "Password tidak boleh kosong";
+                                          }
+                                          if (!regex.hasMatch(value)) {
+                                            return ("Tolong masukkan pasword yang benar. 6 character");
+                                          } else {
+                                            return null;
+                                          }
+                                        },
+                                        onChanged: (value) {},
+                                      ),
+                                      const SizedBox(
+                                        height: 20,
+                                      ),
+                                      TextFormField(
+                                        obscureText:
+                                            hidenPassword.getIsVisible2,
+                                        controller: confirmpassController,
+                                        decoration: InputDecoration(
+                                          fillColor: const Color.fromARGB(
+                                              255, 241, 241, 241),
+                                          suffixIcon: IconButton(
+                                              icon:
+                                                  Icon(hidenPassword.getIcon2),
+                                              onPressed: () {
+                                                hidenPassword.setIcon2 =
+                                                    !hidenPassword
+                                                        .getIsVisible2;
+                                              }),
+                                          filled: true,
+                                          hintText: 'Confirm Password',
+                                          enabled: true,
+                                          contentPadding: const EdgeInsets.only(
+                                              left: 15.0,
+                                              bottom: 15.0,
+                                              top: 15.0),
+                                          focusedBorder: OutlineInputBorder(
+                                            borderSide: new BorderSide(
+                                                color: Colors.white),
+                                            borderRadius:
+                                                new BorderRadius.circular(20),
+                                          ),
+                                          enabledBorder: UnderlineInputBorder(
+                                            borderSide: new BorderSide(
+                                                color: Colors.white),
+                                            borderRadius:
+                                                new BorderRadius.circular(20),
+                                          ),
+                                        ),
+                                        style: TextStyle(fontSize: 25),
+                                        validator: (value) {
+                                          if (confirmpassController.text !=
+                                              passwordController.text) {
+                                            return "Password tidak cocok";
+                                          } else {
+                                            return null;
+                                          }
+                                        },
+                                        onChanged: (value) {},
+                                      ),
+                                      const SizedBox(
+                                        height: 20,
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          const Text(
+                                            "Role : ",
+                                            style: TextStyle(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                          DropdownButton<String>(
+                                            dropdownColor: Colors.blue[900],
+                                            isDense: true,
+                                            isExpanded: false,
+                                            iconEnabledColor: Colors.white,
+                                            focusColor: Colors.white,
+                                            items: options.map(
+                                                (String dropDownStringItem) {
+                                              return DropdownMenuItem<String>(
+                                                value: dropDownStringItem,
+                                                child: Text(
+                                                  dropDownStringItem,
+                                                  style: const TextStyle(
+                                                    color: Colors.white,
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 20,
+                                                  ),
+                                                ),
+                                              );
+                                            }).toList(),
+                                            onChanged: (newValueSelected) {
+                                              setState(() {
+                                                _currentItemSelected =
+                                                    newValueSelected!;
+                                                rool = newValueSelected;
+                                              });
+                                            },
+                                            value: _currentItemSelected,
+                                          ),
+                                        ],
+                                      ),
+                                      const SizedBox(
+                                        height: 20,
+                                      ),
+                                      Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.end,
+                                        children: [
+                                          MaterialButton(
+                                            shape: const RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.all(
+                                                Radius.circular(20.0),
+                                              ),
+                                            ),
+                                            elevation: 5.0,
+                                            height: 60,
+                                            minWidth: 350,
+                                            onPressed: () {
+                                              setState(() {
+                                                showProgress = true;
+                                              });
+                                              signUp(
+                                                  emailController.text,
+                                                  passwordController.text,
+                                                  rool,
+                                                  nameController.text);
+                                            },
+                                            color: OrangeColor,
+                                            child: const Text(
+                                              "Daftar",
+                                              style: TextStyle(
+                                                  fontSize: 25,
+                                                  color: Colors.white),
+                                            ),
+                                          ),
+                                          const SizedBox(
+                                            height: 10,
+                                          ),
+                                          MaterialButton(
+                                            shape: const RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.all(
+                                                Radius.circular(20.0),
+                                              ),
+                                            ),
+                                            elevation: 5.0,
+                                            height: 60,
+                                            minWidth: 350,
+                                            onPressed: () {
+                                              const CircularProgressIndicator();
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      LoginPage(),
+                                                ),
+                                              );
+                                            },
+                                            color: PurpleColor,
+                                            child: const Text(
+                                              "Masuk",
+                                              style: TextStyle(
+                                                  fontSize: 25,
+                                                  color: Colors.white),
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                     ],
+                                  ),
+                                  const SizedBox(
+                                    height: 20,
                                   ),
                                 ],
                               ),
-                              const SizedBox(
-                                height: 20,
-                              ),
-                            ],
+                            ),
                           ),
                         ),
                       ),
@@ -399,20 +418,40 @@ class _RegisterPageState extends State<RegisterPage> {
       await _auth
           .createUserWithEmailAndPassword(email: email, password: password)
           .then((value) => {postDetailsToFirestore(email, rool, name)})
-          .catchError((e) {});
+          .catchError((e) {
+        print(e);
+      });
     }
   }
 
   postDetailsToFirestore(String email, String rool, String name) async {
     FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
     var user = _auth.currentUser;
+
+    // USERS COLLECTION
     CollectionReference ref = FirebaseFirestore.instance.collection('users');
     ref.doc(user!.uid).set({
       'email': emailController.text,
       'rool': rool,
       'name': name,
       'alamat': '',
-      'nik': ''
+      'nik': '',
+      'imgUrl': ''
+    });
+
+    // BIO DATA COLLECTION
+    CollectionReference refBio =
+        FirebaseFirestore.instance.collection('bio_data');
+    refBio.doc(user.uid).set({
+      'nama': name,
+      'email': emailController.text,
+      'ttl': '',
+      'kewarganegaraan': '',
+      'nik': '',
+      'agama': '',
+      'jenis_kelamin': '',
+      'status_perkawinan': '',
+      'id_karyawan': user.uid
     });
     Navigator.pushReplacement(
       context,

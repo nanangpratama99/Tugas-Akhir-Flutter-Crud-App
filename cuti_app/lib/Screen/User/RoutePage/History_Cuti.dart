@@ -41,8 +41,10 @@ class HistoryCuti extends StatelessWidget {
             StreamBuilder<QuerySnapshot>(
                 stream: FirebaseFirestore.instance
                     .collection("history_cuti")
-                    .where('uid', isEqualTo: user!.uid)
-                    .where('status', isEqualTo: 'Pending')
+                    // .where('uid', isEqualTo: user!.uid)
+                    // .where('status', isEqualTo: 'Pending')
+                    // .where('status', isEqualTo: 'Approved')
+                    // .where('status', isEqualTo: 'Reject')
                     .snapshots(),
                 builder: (context, snapshot) {
                   if (snapshot.hasError) {
@@ -74,27 +76,52 @@ class HistoryCuti extends StatelessWidget {
                                     ],
                                   ),
                                   child: Padding(
-                                    padding: const EdgeInsets.all(20.0),
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 20, horizontal: 15),
                                     child: Column(
                                       mainAxisAlignment:
-                                          MainAxisAlignment.center,
+                                          MainAxisAlignment.spaceBetween,
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        Text(
-                                            "Tanggal Cuti : ${e['tanggal_awal']}"),
-                                        const SizedBox(
-                                          height: 5,
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          // VIEW HISTORY DATA
+                                          children: [
+                                            Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text("Tanggal Cuti"),
+                                                Text("Alasan"),
+                                                Text("Rincian Alasan"),
+                                              ],
+                                            ),
+                                            Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(":"),
+                                                Text(":"),
+                                                Text(":"),
+                                              ],
+                                            ),
+                                            Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text("${e['tanggal_awal']}"),
+                                                Text("${e['alasan']}"),
+                                                Text("${e['rincian_alasan']}"),
+                                              ],
+                                            ),
+                                          ],
                                         ),
-                                        const SizedBox(
-                                          height: 5,
-                                        ),
-                                        Text("Alasan : ${e['alasan']}"),
-                                        const SizedBox(
-                                          height: 5,
-                                        ),
-                                        Text(
-                                            "Rincian Alasan : ${e['rincian_alasan']}"),
                                         const SizedBox(
                                           height: 30,
                                         ),

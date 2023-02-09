@@ -1,3 +1,4 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -5,6 +6,8 @@ import '../../constatns/colors.dart';
 import '../User/Karyawan.dart';
 import '../Admin/Hrd.dart';
 import 'Register.dart';
+
+import 'package:provider/provider.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -272,11 +275,14 @@ class _LoginPageState extends State<LoginPage> {
         );
         route();
       } on FirebaseAuthException catch (e) {
-        if (e.code == 'user-not-found') {
-          print('No user found for that email.');
-        } else if (e.code == 'wrong-password') {
-          print('Wrong password provided for that user.');
-        }
+        AwesomeDialog(
+          context: context,
+          dialogType: DialogType.error,
+          animType: AnimType.rightSlide,
+          title: 'Erorr',
+          desc: e.code,
+          btnOkOnPress: () {},
+        ).show();
       }
     }
   }

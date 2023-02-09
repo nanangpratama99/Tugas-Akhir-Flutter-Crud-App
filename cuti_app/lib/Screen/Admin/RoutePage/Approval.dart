@@ -47,6 +47,7 @@ class _ApprovalPageState extends State<ApprovalPage> {
               height: 20,
             ),
 
+            // ====== STREAM BUILDER ======
             StreamBuilder<QuerySnapshot>(
                 stream: FirebaseFirestore.instance
                     .collection("history_cuti")
@@ -56,6 +57,13 @@ class _ApprovalPageState extends State<ApprovalPage> {
                   if (snapshot.hasError) {
                     return Center(
                         child: Text('Terjadi kesalahan ${snapshot.error}'));
+                  } else if (snapshot.data != null) {
+                    return Center(
+                      child: Text(
+                        "Data Kosong",
+                        style: const TextStyle(fontSize: 25),
+                      ),
+                    );
                   } else if (snapshot.hasData) {
                     int user = snapshot.data!.docs.length;
 

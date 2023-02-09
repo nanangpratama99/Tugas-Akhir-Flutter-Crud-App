@@ -302,10 +302,10 @@ class _HrdPageState extends State<HrdPage> {
                                                     CrossAxisAlignment.center,
                                                 mainAxisAlignment:
                                                     MainAxisAlignment.center,
-                                                children: [
+                                                children: const [
                                                   Text(
                                                     "Cuti di Approve",
-                                                    style: const TextStyle(
+                                                    style: TextStyle(
                                                         fontSize: 13,
                                                         color: Colors.white),
                                                   ),
@@ -359,7 +359,7 @@ class _HrdPageState extends State<HrdPage> {
                                                         .data!.docs.length;
                                                     return Text(
                                                       "$cutiRejected",
-                                                      style: TextStyle(
+                                                      style: const TextStyle(
                                                           fontSize: 30,
                                                           fontWeight:
                                                               FontWeight.bold),
@@ -367,7 +367,7 @@ class _HrdPageState extends State<HrdPage> {
                                                   }
                                                   return CircularProgressIndicator();
                                                 }),
-                                            SizedBox(
+                                            const SizedBox(
                                               height: 10,
                                             ),
                                             Container(
@@ -418,159 +418,183 @@ class _HrdPageState extends State<HrdPage> {
                       child: Column(
                         children: [
                           // AKUN TERDAFTAR
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 20, vertical: 10),
-                            child: Container(
-                              height: 120,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20),
-                                color: Colors.white,
-                              ),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                children: [
-                                  Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Container(
-                                        margin: EdgeInsets.only(left: 20),
-                                        height: 80,
-                                        width: 80,
-                                        decoration: BoxDecoration(
-                                            color: Colors.amber,
-                                            borderRadius:
-                                                BorderRadius.circular(20)),
-                                        child: const Icon(
-                                          Icons.person,
-                                          size: 50,
-                                          color:
-                                              Color.fromARGB(255, 40, 38, 38),
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                  const SizedBox(
-                                    width: 10,
-                                  ),
-                                  const Text(
-                                    "Akun Terdaftar",
-                                    style: TextStyle(
-                                        fontSize: 25,
-                                        fontWeight: FontWeight.w500),
-                                  ),
-                                  const SizedBox(
-                                    width: 10,
-                                  ),
-                                  Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Padding(
-                                        padding:
-                                            const EdgeInsets.only(right: 10),
-                                        child: IconButton(
-                                          onPressed: () {
-                                            Navigator.pushReplacement(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) =>
-                                                    AkunTerdaftar(),
-                                              ),
-                                            );
-                                          },
-                                          icon: const Icon(
-                                            Icons.arrow_circle_right_sharp,
-                                            size: 40,
-                                            color: Color.fromARGB(
-                                                255, 109, 109, 109),
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const AkunTerdaftar()),
+                              );
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 20, vertical: 10),
+                              child: Container(
+                                height: 120,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(20),
+                                  color: Colors.white,
+                                ),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
+                                  children: [
+                                    Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Container(
+                                          margin: EdgeInsets.only(left: 20),
+                                          height: 80,
+                                          width: 80,
+                                          decoration: BoxDecoration(
+                                              color: Colors.amber,
+                                              borderRadius:
+                                                  BorderRadius.circular(20)),
+                                          child: const Icon(
+                                            Icons.person,
+                                            size: 50,
+                                            color:
+                                                Color.fromARGB(255, 40, 38, 38),
                                           ),
-                                        ),
-                                      )
-                                    ],
-                                  )
-                                ],
+                                        )
+                                      ],
+                                    ),
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+                                    const Text(
+                                      "Akun Terdaftar",
+                                      style: TextStyle(
+                                          fontSize: 25,
+                                          fontWeight: FontWeight.w500),
+                                    ),
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+                                    Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(right: 10),
+                                          child: IconButton(
+                                            onPressed: () {
+                                              Navigator.pushReplacement(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      AkunTerdaftar(),
+                                                ),
+                                              );
+                                            },
+                                            icon: const Icon(
+                                              Icons.arrow_circle_right_sharp,
+                                              size: 40,
+                                              color: Color.fromARGB(
+                                                  255, 109, 109, 109),
+                                            ),
+                                          ),
+                                        )
+                                      ],
+                                    )
+                                  ],
+                                ),
                               ),
                             ),
                           ),
 
                           // APROVAL
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 20, vertical: 10),
-                            child: Container(
-                              height: 120,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20),
-                                color: Colors.white,
-                              ),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                children: [
-                                  Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Row(
-                                        children: [
-                                          Container(
-                                            margin: EdgeInsets.only(left: 20),
-                                            height: 80,
-                                            width: 80,
-                                            decoration: BoxDecoration(
-                                                color: Colors.amber,
-                                                borderRadius:
-                                                    BorderRadius.circular(20)),
-                                            child: const Icon(
-                                              Icons.checklist,
-                                              size: 50,
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const ApprovalPage()),
+                              );
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 20, vertical: 10),
+                              child: Container(
+                                height: 120,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(20),
+                                  color: Colors.white,
+                                ),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
+                                  children: [
+                                    Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Container(
+                                              margin: EdgeInsets.only(left: 20),
+                                              height: 80,
+                                              width: 80,
+                                              decoration: BoxDecoration(
+                                                  color: Colors.amber,
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          20)),
+                                              child: const Icon(
+                                                Icons.checklist,
+                                                size: 50,
+                                                color: Color.fromARGB(
+                                                    255, 40, 38, 38),
+                                              ),
+                                            ),
+                                            const SizedBox(
+                                              width: 15,
+                                            ),
+                                            const Text(
+                                              "Approval",
+                                              style: TextStyle(
+                                                  fontSize: 25,
+                                                  fontWeight: FontWeight.w500),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                    const SizedBox(
+                                      width: 65,
+                                    ),
+                                    Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(right: 10),
+                                          child: IconButton(
+                                            onPressed: () {
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        const ApprovalPage()),
+                                              );
+                                            },
+                                            // ignore: prefer_const_constructors
+                                            icon: Icon(
+                                              Icons.arrow_circle_right_sharp,
+                                              size: 40,
                                               color: Color.fromARGB(
-                                                  255, 40, 38, 38),
+                                                  255, 109, 109, 109),
                                             ),
                                           ),
-                                          const SizedBox(
-                                            width: 15,
-                                          ),
-                                          const Text(
-                                            "Approval",
-                                            style: TextStyle(
-                                                fontSize: 25,
-                                                fontWeight: FontWeight.w500),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                  const SizedBox(
-                                    width: 65,
-                                  ),
-                                  Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Padding(
-                                        padding:
-                                            const EdgeInsets.only(right: 10),
-                                        child: IconButton(
-                                          onPressed: () {
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      const ApprovalPage()),
-                                            );
-                                          },
-                                          // ignore: prefer_const_constructors
-                                          icon: Icon(
-                                            Icons.arrow_circle_right_sharp,
-                                            size: 40,
-                                            color: Color.fromARGB(
-                                                255, 109, 109, 109),
-                                          ),
-                                        ),
-                                      )
-                                    ],
-                                  )
-                                ],
+                                        )
+                                      ],
+                                    )
+                                  ],
+                                ),
                               ),
                             ),
                           ),

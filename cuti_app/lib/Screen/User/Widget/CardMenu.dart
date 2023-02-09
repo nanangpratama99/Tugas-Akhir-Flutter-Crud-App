@@ -136,7 +136,7 @@ class _CardMenuState extends State<CardMenu> {
                                             Text("Cuti Terpakai"),
                                             Text(
                                               "$dataCuti",
-                                              style: TextStyle(
+                                              style: const TextStyle(
                                                 fontWeight: FontWeight.w500,
                                                 fontSize: 30,
                                               ),
@@ -169,7 +169,7 @@ class _CardMenuState extends State<CardMenu> {
                             onPressed: () {
                               print("Selengkaptnya");
                             },
-                            icon: Text(
+                            icon: const Text(
                               "Selengkapnya",
                               style: TextStyle(
                                 fontSize: 20,
@@ -189,78 +189,104 @@ class _CardMenuState extends State<CardMenu> {
         const SizedBox(
           height: 15,
         ),
+        Padding(
+          padding: const EdgeInsets.only(left: 30),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: const [
+              Text(
+                "MENU",
+                style: TextStyle(
+                    color: Color.fromARGB(255, 74, 74, 74),
+                    fontSize: 30,
+                    fontWeight: FontWeight.w500),
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(
+          height: 10,
+        ),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const SizedBox(
-              width: 15,
-            ),
-            Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(25),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.3),
-                    spreadRadius: 5,
-                    blurRadius: 10,
-                    offset: Offset(0, 9), // changes position of shadow
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const HistoryCuti(),
                   ),
-                ],
-              ),
-              height: 80,
-              width: 350,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        height: 50,
-                        width: 50,
-                        decoration: BoxDecoration(
-                          color: Colors.red[400],
-                          borderRadius: BorderRadius.circular(15),
-                        ),
-                        child: const Icon(
-                          Icons.history,
-                          size: 40,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ],
-                  ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
-                      Text(
-                        "History Cuti",
-                        style: TextStyle(fontSize: 25),
-                      ),
-                      Text("Kamu telah melakukan\npengajuan cuti\pada tanggal"),
-                    ],
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 15, right: 15),
-                    child: IconButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const HistoryCuti(),
+                );
+              },
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(25),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.3),
+                      spreadRadius: 5,
+                      blurRadius: 10,
+                      offset: Offset(0, 9), // changes position of shadow
+                    ),
+                  ],
+                ),
+                height: 100,
+                width: 350,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          height: 60,
+                          width: 60,
+                          decoration: BoxDecoration(
+                            color: Colors.red[400],
+                            borderRadius: BorderRadius.circular(15),
                           ),
-                        );
-                      },
-                      icon: Icon(
-                        Icons.arrow_circle_right,
-                        size: 50,
-                        color: Colors.green,
+                          child: const Icon(
+                            Icons.history,
+                            size: 40,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ],
+                    ),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "History Cuti",
+                          style: TextStyle(fontSize: 25),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 2),
+                          child: Container(
+                            width: 150,
+                            height: 2,
+                            color: Color.fromARGB(255, 196, 196, 196),
+                          ),
+                        ),
+                        Text("Lihat untuk melihat\nringkasancuti kamu"),
+                      ],
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 15, right: 15),
+                      child: IconButton(
+                        onPressed: () {},
+                        icon: Icon(
+                          Icons.arrow_circle_right,
+                          size: 50,
+                          color: Colors.green,
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ],
@@ -269,81 +295,97 @@ class _CardMenuState extends State<CardMenu> {
           height: 20,
         ),
         Row(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            const SizedBox(
-              width: 15,
-            ),
-            Container(
-              decoration: BoxDecoration(boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.3),
-                  spreadRadius: 5,
-                  blurRadius: 10,
-                  offset: Offset(0, 9), // changes position of shadow
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const Bio_Data(),
+                  ),
+                );
+              },
+              child: Container(
+                decoration: BoxDecoration(
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.3),
+                      spreadRadius: 5,
+                      blurRadius: 10,
+                      offset: Offset(0, 9), // changes position of shadow
+                    ),
+                  ],
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(25),
                 ),
-              ], color: Colors.white, borderRadius: BorderRadius.circular(25)),
-              height: 80,
-              width: 350,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Row(
+                height: 100,
+                width: 350,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(left: 0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Container(
-                            height: 50,
-                            width: 50,
-                            decoration: BoxDecoration(
-                              color: Colors.blue,
-                              borderRadius: BorderRadius.circular(15),
-                            ),
-                            child: const Icon(
-                              Icons.person,
-                              size: 40,
-                              color: Colors.white,
-                            ),
-                          ),
-                          SizedBox(
-                            width: 20,
-                          ),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                          Row(
                             children: [
-                              Text(
-                                "Data Diri",
-                                style: TextStyle(fontSize: 25),
+                              Container(
+                                height: 60,
+                                width: 60,
+                                decoration: BoxDecoration(
+                                  color: Colors.blue,
+                                  borderRadius: BorderRadius.circular(15),
+                                ),
+                                child: const Icon(
+                                  Icons.person,
+                                  size: 40,
+                                  color: Colors.white,
+                                ),
                               ),
-                              Text("Klik untuk melihat\ndata diri anda"),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "Data Diri",
+                                    style: TextStyle(fontSize: 25),
+                                  ),
+                                  Padding(
+                                    padding:
+                                        const EdgeInsets.symmetric(vertical: 2),
+                                    child: Container(
+                                        width: 150,
+                                        height: 2,
+                                        color:
+                                            Color.fromARGB(255, 196, 196, 196)),
+                                  ),
+                                  Text("Klik untuk melihat\ndata diri anda"),
+                                ],
+                              ),
                             ],
                           ),
                         ],
                       ),
-                    ],
-                  ),
-                  Padding(
-                    padding:
-                        const EdgeInsets.only(left: 55, bottom: 15, right: 10),
-                    child: IconButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const Bio_Data(),
-                          ),
-                        );
-                      },
-                      icon: Icon(
-                        Icons.arrow_circle_right,
-                        size: 50,
-                        color: Colors.green,
+                    ),
+                    Padding(
+                      padding:
+                          const EdgeInsets.only(left: 0, bottom: 15, right: 10),
+                      child: IconButton(
+                        onPressed: () {},
+                        icon: Icon(
+                          Icons.arrow_circle_right,
+                          size: 50,
+                          color: Colors.green,
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ],

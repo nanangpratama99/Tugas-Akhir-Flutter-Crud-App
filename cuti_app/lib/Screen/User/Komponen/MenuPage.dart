@@ -21,15 +21,12 @@ class _ButtomNavbarState extends State<ButtomNavbar> {
   int _selectedIndex = 0;
   bool showProgress = false;
   final _formkey = GlobalKey<FormState>();
-  final _auth = FirebaseAuth.instance;
 
   // TEXTFIELD CONTROLLER
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _rincianAlasan = TextEditingController();
-  final TextEditingController _alasan = TextEditingController();
   final TextEditingController _startDateController = TextEditingController();
 
-  // LIST PAGE
+  // LIST PAGES
   static const List<Widget> _widgetOptions = <Widget>[
     HomeMenu(),
     CalenderMenu(),
@@ -175,9 +172,10 @@ class _ButtomNavbarState extends State<ButtomNavbar> {
                                                             .size
                                                             .width,
                                                     child: TableCalendar(
-                                                      headerStyle: HeaderStyle(
-                                                          formatButtonVisible:
-                                                              false),
+                                                      headerStyle:
+                                                          const HeaderStyle(
+                                                              formatButtonVisible:
+                                                                  false),
                                                       firstDay: DateTime.utc(
                                                           2010, 10, 16),
                                                       lastDay: DateTime.utc(
@@ -302,16 +300,19 @@ class _ButtomNavbarState extends State<ButtomNavbar> {
                                     onPressed: () {
                                       FirebaseFirestore.instance
                                           .collection("history_cuti")
-                                          .add({
-                                        "tanggal_awal":
-                                            _startDateController.text,
-                                        // "tanggal_akhir":
-                                        //     _endDateController.text,
-                                        "alasan": selectedValue,
-                                        "rincian_alasan": _rincianAlasan.text,
-                                        "uid": user!.uid,
-                                        'status': 'Pending',
-                                      });
+                                          .add(
+                                        {
+                                          "tanggal_awal":
+                                              _startDateController.text,
+                                          // "tanggal_akhir":
+                                          //     _endDateController.text,
+                                          "alasan": selectedValue,
+                                          "rincian_alasan": _rincianAlasan.text,
+                                          "uid": user!.uid,
+                                          'status': 'Pending',
+                                        },
+                                      );
+                                      Navigator.pop(context);
                                     },
                                     child: const Text(
                                       'Kirim',
@@ -357,23 +358,4 @@ class _ButtomNavbarState extends State<ButtomNavbar> {
       ),
     );
   }
-
-  // postDetailsToFirestore(String tanggal_awal, String tanggal_akhir,
-  //     String alasan, String rincial_alasan) async {
-  //   FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
-  //   var user = _auth.currentUser;
-  //   CollectionReference ref = FirebaseFirestore.instance.collection('users');
-  //   ref.doc(user!.uid).set({
-  //     'tanggal_awal': tanggal_awal,
-  //     'tanggal_akhir': tanggal_akhir,
-  //     'alasan': alasan,
-  //     'rincial_alasan': rincial_alasan
-  //   });
-  //   Navigator.pushReplacement(
-  //     context,
-  //     MaterialPageRoute(
-  //       builder: (context) => HistoryCuti(),
-  //     ),
-  //   );
-  // }
 }
