@@ -310,6 +310,7 @@ class _ButtomNavbarState extends State<ButtomNavbar> {
                                           "rincian_alasan": _rincianAlasan.text,
                                           "uid": user!.uid,
                                           'status': 'Pending',
+                                          "name": user.displayName,
                                         },
                                       );
                                       Navigator.pop(context);

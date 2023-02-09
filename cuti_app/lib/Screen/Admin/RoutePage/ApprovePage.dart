@@ -136,19 +136,19 @@ class _ApprovePageState extends State<ApprovePage> {
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
                                               children: [
-                                                Text("Nama Karyawan"),
+                                                Text("${e['name']}"),
                                                 const SizedBox(
                                                   height: 10,
                                                 ),
-                                                Text(" ${e['tanggal_awal']}"),
+                                                Text("${e['tanggal_awal']}"),
                                                 const SizedBox(
                                                   height: 10,
                                                 ),
-                                                Text(" ${e['alasan']}"),
+                                                Text("${e['alasan']}"),
                                                 const SizedBox(
                                                   height: 10,
                                                 ),
-                                                Text(" ${e['rincian_alasan']}"),
+                                                Text("${e['rincian_alasan']}"),
                                               ],
                                             ),
                                           ],

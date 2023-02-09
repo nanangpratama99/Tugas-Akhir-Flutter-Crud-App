@@ -417,7 +417,11 @@ class _RegisterPageState extends State<RegisterPage> {
     if (_formkey.currentState!.validate()) {
       await _auth
           .createUserWithEmailAndPassword(email: email, password: password)
-          .then((value) => {postDetailsToFirestore(email, rool, name)})
+          .then((value) => {
+                postDetailsToFirestore(email, rool, name),
+                // Update Displayname Auth
+                value.user!.updateDisplayName(name),
+              })
           .catchError((e) {
         print(e);
       });
@@ -425,7 +429,6 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   postDetailsToFirestore(String email, String rool, String name) async {
-    FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
     var user = _auth.currentUser;
 
     // USERS COLLECTION

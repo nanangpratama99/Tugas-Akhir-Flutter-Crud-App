@@ -266,6 +266,9 @@ class _ProfilMenuState extends State<ProfilMenu> {
                                                   "alamat":
                                                       alamatController.text,
                                                 });
+
+                                                user.updateDisplayName(
+                                                    nameController.text);
                                                 // Navigator.of(context).pop();
                                               }
                                             },

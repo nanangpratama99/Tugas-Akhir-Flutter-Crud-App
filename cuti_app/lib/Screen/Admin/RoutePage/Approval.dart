@@ -54,10 +54,12 @@ class _ApprovalPageState extends State<ApprovalPage> {
                     .where('status', isEqualTo: 'Pending')
                     .snapshots(),
                 builder: (context, snapshot) {
+                  var lengs = snapshot.data?.docs.length;
+                  print(lengs);
                   if (snapshot.hasError) {
                     return Center(
                         child: Text('Terjadi kesalahan ${snapshot.error}'));
-                  } else if (snapshot.data != null) {
+                  } else if (lengs == null || lengs == 0) {
                     return Center(
                       child: Text(
                         "Data Kosong",
@@ -146,7 +148,7 @@ class _ApprovalPageState extends State<ApprovalPage> {
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
                                               children: [
-                                                Text("Nama Karyawan"),
+                                                Text(" ${e['name']}"),
                                                 const SizedBox(
                                                   height: 10,
                                                 ),
