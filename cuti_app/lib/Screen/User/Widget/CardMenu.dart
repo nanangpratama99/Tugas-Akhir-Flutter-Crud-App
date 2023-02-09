@@ -35,7 +35,7 @@ class _CardMenuState extends State<CardMenu> {
                   offset: Offset(0, 9), // changes position of shadow
                 ),
               ], color: Colors.white, borderRadius: BorderRadius.circular(35)),
-              height: 170,
+              height: 150,
               width: 350,
               child: Padding(
                 padding: const EdgeInsets.all(15),
@@ -102,7 +102,7 @@ class _CardMenuState extends State<CardMenu> {
                                   ],
                                 ),
                                 const SizedBox(
-                                  height: 60,
+                                  height: 100,
                                   child: VerticalDivider(
                                       thickness: 2,
                                       color:
@@ -152,34 +152,6 @@ class _CardMenuState extends State<CardMenu> {
                           }
                           return const CircularProgressIndicator();
                         }),
-                    const SizedBox(
-                      height: 25,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Container(
-                          height: 50,
-                          width: 300,
-                          decoration: BoxDecoration(
-                            color: Colors.deepPurple,
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          child: IconButton(
-                            onPressed: () {
-                              print("Selengkaptnya");
-                            },
-                            icon: const Text(
-                              "Selengkapnya",
-                              style: TextStyle(
-                                fontSize: 20,
-                                color: Color.fromARGB(255, 236, 236, 236),
-                              ),
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
                   ],
                 ),
               ),
@@ -268,7 +240,7 @@ class _CardMenuState extends State<CardMenu> {
                           child: Container(
                             width: 150,
                             height: 2,
-                            color: Color.fromARGB(255, 196, 196, 196),
+                            color: Color.fromARGB(255, 227, 227, 227),
                           ),
                         ),
                         Text("Lihat untuk melihat\nringkasancuti kamu"),
@@ -345,7 +317,7 @@ class _CardMenuState extends State<CardMenu> {
                                 ),
                               ),
                               SizedBox(
-                                width: 10,
+                                width: 20,
                               ),
                               Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -362,7 +334,7 @@ class _CardMenuState extends State<CardMenu> {
                                         width: 150,
                                         height: 2,
                                         color:
-                                            Color.fromARGB(255, 196, 196, 196)),
+                                            Color.fromARGB(255, 220, 220, 220)),
                                   ),
                                   Text("Klik untuk melihat\ndata diri anda"),
                                 ],

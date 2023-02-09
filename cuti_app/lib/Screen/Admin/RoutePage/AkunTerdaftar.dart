@@ -81,7 +81,7 @@ class _AkunTerdaftarState extends State<AkunTerdaftar> {
                                     ],
                                   ),
                                   child: Padding(
-                                    padding: const EdgeInsets.all(20.0),
+                                    padding: const EdgeInsets.all(10.0),
                                     child: Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceAround,

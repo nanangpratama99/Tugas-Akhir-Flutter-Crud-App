@@ -183,7 +183,7 @@ class _ApprovePageState extends State<ApprovePage> {
                                                   color: Colors.white,
                                                 ),
                                                 Text(
-                                                  "Cuti Telah Ditolah",
+                                                  "Cuti Telah Di Approve",
                                                   style: const TextStyle(
                                                       color: Colors.white),
                                                 ),

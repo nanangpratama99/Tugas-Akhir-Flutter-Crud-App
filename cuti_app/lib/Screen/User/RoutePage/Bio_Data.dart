@@ -102,14 +102,31 @@ class _Bio_DataState extends State<Bio_Data> {
                             height: 150,
                             width: MediaQuery.of(context).size.width,
                             child: Column(
-                              children: const [
+                              children: [
                                 SizedBox(
-                                  height: 40,
+                                  height: 50,
                                 ),
-                                Text(
-                                  "Bio Data Karyawan",
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 30),
+                                Row(
+                                  children: [
+                                    IconButton(
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                      icon: Icon(
+                                        Icons.arrow_circle_left,
+                                        size: 40,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: 20,
+                                    ),
+                                    Text(
+                                      "Bio Data Karyawan",
+                                      style: TextStyle(
+                                          color: Colors.white, fontSize: 30),
+                                    ),
+                                  ],
                                 ),
                               ],
                             ),
